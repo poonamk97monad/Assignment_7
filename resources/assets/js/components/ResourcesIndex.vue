@@ -2,9 +2,11 @@
     <div>
         <div v-if="!resourcesview">
             <h4 class="text-center font-weight-bold">Resources</h4>
+            <button class="btn btn-info" @click="searchResourceCollection()"><i style="color:white" class="fa fa-trash">search</i></button>
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th scope="col">Id</th>
                     <th scope="col">Title</th>
                     <th scope="col">Slug</th>
                     <th scope="col">Description</th>
@@ -12,23 +14,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="resources in arrObjResources.data">
-                    <td>{{resources.file_upload}}</td>
-                    <td>{{resources.title}}</td>
-                    <td>{{resources.slug}}</td>
-                    <td>{{resources.description}}</td>
+                <tr v-for="objResource in arrObjResources.data">
+                    <td>{{objResource.id}}</td>
+                    <td>{{objResource.title}}</td>
+                    <td>{{objResource.slug}}</td>
+                    <td>{{objResource.description}}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditModal" @click="updateResource(resources)">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditModal" @click="updateResource(objResource)">
                             <span class="glyphicon glyphicon-pencil"></span></button>
-                        <button class="btn btn-danger" @click="deleteResource(resources)"><span class="glyphicon glyphicon-trash"></span></button>
-                        <button class="btn btn-info" @click="viewResource(resources)"><i style="color:white" class="fa fa-trash">View</i></button>
+                        <button class="btn btn-danger" @click="deleteResource(objResource)"><span class="glyphicon glyphicon-trash"></span></button>
+                        <button class="btn btn-info" @click="viewResource(objResource)"><i style="color:white" class="fa fa-trash">View</i></button>
                     </td>
                     <td>
-                        <p v-if="resources.is_favortted">
-                            <button class="btn btn-success" @click="addToResourceFavortted(resources, false)">UnFavorites</button>
+                        <p v-if="objResource.is_favortted">
+                            <button class="btn btn-success" @click="addToResourceFavortted(objResource, false)">UnFavorites</button>
                         </p>
                         <p v-else>
-                           <button class="btn btn-success" @click="addToResourceFavortted(resources, true)"> Favorites</button>
+                           <button class="btn btn-success" @click="addToResourceFavortted(objResource, true)"> Favorites</button>
                         </p>
                     </td>
                 </tr>
@@ -38,6 +40,7 @@
         <div>
             <resourcesView v-if="resourcesview"></resourcesView>
         </div>
+
         <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="favoritesModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -77,7 +80,6 @@
 <script>
     import {mapState} from 'vuex'
     import resourcesView from './ResourceView'
-
     export default {
         data(){
             return {
@@ -87,31 +89,33 @@
                     description: ''
                 },
                 boolResourceView:false,
-                isfovrato:false
             }
         },
         mounted() {
             this.$store.dispatch('fetchResourcesCollections')
         },
         methods: {
-            deleteResource(resource) {
-                this.$store.dispatch('deleteResource',resource)
+            deleteResource(objResource) {
+                this.$store.dispatch('deleteResource',objResource)
             },
             viewResource(objResource) {
                 this.boolResourceView = true;
                 this.$store.commit('VIEW_RESOURCE', {objResource: objResource})
             },
-            updateResource(resource) {
-                this.resource.id = resource.id;
-                this.resource.title = resource.title;
-                this.resource.description = resource.description;
+            searchResourceCollection() {
+                window.location.href="http://127.0.0.1:8000/resources/search/search"
+
+            },
+            updateResource(objResource) {
+                this.resource.id          = objResource.id;
+                this.resource.title       = objResource.title;
+                this.resource.description = objResource.description;
             },
             updateResourceDetails() {
                 this.$store.dispatch('updateResource',{id:this.resource.id,title:this.resource.title,description:this.resource.description})
             },
-            addToResourceFavortted(resource) {
-
-                this.$store.dispatch('addToResourceFavortted',resource)
+            addToResourceFavortted(objResource) {
+                this.$store.dispatch('addToResourceFavortted',objResource)
             },
         },
         computed: {
@@ -123,10 +127,9 @@
             isValid() {
                 return this.resource.title !== '' && this.resource.description !== ''
             }
-
         },
         components: {
-            resourcesView:resourcesView
+            resourcesView:resourcesView,
         },
     }
 </script>

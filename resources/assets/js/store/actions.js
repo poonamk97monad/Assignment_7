@@ -1,9 +1,9 @@
 let actions = {
-    createResource({commit}, resource) {
-        axios.post('/api/resources', resource)
+    createResource({commit}, objResource) {
+        axios.post('/api/resources', objResource)
             .then(response => {
                 commit('CREATE_RESOURCE', response.data)
-                // window.location.reload();
+                window.location.reload();
             }).catch(error => {
             console.log(error)
         })
@@ -29,7 +29,7 @@ let actions = {
         })
 
     },
-    fetchResourcesCollections({commit},payload) {
+    fetchResourcesCollections({commit}) {
         axios.get('/api/resources')
             .then(response => {
                 commit('FETCH_RESOURCES_COLLECTIONS', response.data)
@@ -45,18 +45,8 @@ let actions = {
             console.log(error)
         })
     },
-    // viewResource({commit}, intId) {
-    //     console.log(intId)
-    //     axios.get('/api/resources/'+intId)
-    //         .then(resource => {
-    //             commit('VIEW_RESOURCE', resource)
-    //
-    //         }).catch(err => {
-    //         console.log(err)
-    //     })
-    // },
-    deleteResource({commit}, resource) {
-        axios.delete(`/api/resources/${resource.id}`)
+    deleteResource({commit}, objResource) {
+        axios.delete(`/api/resources/${objResource.id}`)
             .then(response => {
                 if (response.data === 'ok')
                     commit('DELETE_RESOURCE', resource)
@@ -65,10 +55,9 @@ let actions = {
             // console.log(error)
         })
     },
-    updateResource({commit}, resource) {
-        axios.post('/api/resources/update/'+resource.id,resource)
+    updateResource({commit}, objResource) {
+        axios.post('/api/resources/update/'+objResource.id,objResource)
             .then(response => {
-
                 if (response.data === 'ok')
                     commit('UPDATE_RESOURCE', resource)
                 window.location.reload();
@@ -80,7 +69,7 @@ let actions = {
         axios.post('/api/collections', collection)
             .then(response => {
                 commit('CREATE_COLLECTION', response.data)
-                // window.location.reload();
+                window.location.reload();
             }).catch(error => {
             console.log(error)
         })
@@ -93,13 +82,12 @@ let actions = {
                     commit('DELETE_COLLECTION', collection)
                 window.location.reload();
             }).catch(error => {
-            // console.log(error)
+
         })
     },
     updateCollection({commit}, collection) {
         axios.post('/api/collections/update/'+collection.id,collection)
             .then(response => {
-
                 if (response.data === 'ok')
                     commit('UPDATE_COLLECTION', collection)
                 window.location.reload();
@@ -107,17 +95,6 @@ let actions = {
             console.log(error)
         })
     },
-    // viewCollection({commit}, intId) {
-    //     console.log(intId)
-    //     axios.get('/api/collections/'+intId)
-    //         .then(collection => {
-    //             commit('VIEW_COLLECTION', collection)
-    //
-    //         }).catch(err => {
-    //         console.log(err)
-    //     })
-    // },
-
     addResourceToCollection({commit},  payload) {
         axios.post('/api/collections/'+payload.intCollectionId,payload.collection)
             .then(response => {
@@ -146,20 +123,21 @@ let actions = {
             console.log(error)
         })
     },
-    searchResource({commit}, resource) {
-        axios.post('/resources/search' , resource)
+    // searchResource({commit}, resource) {
+    //     axios.post('/resources/search' , resource)
+    //         .then(response => {
+    //             commit('SEARCH_RESOURCE', response)
+    //             // console.log(response)
+    //         }).catch(error => {
+    //         console.log(error)
+    //     })
+    // },
+    searchResourceCollection({commit}, search) {
+        axios.post('/collections/search/data' , search)
             .then(response => {
-                commit('SEARCH_RESOURCE', response)
-                // console.log(response)
-            }).catch(error => {
-            console.log(error)
-        })
-    },
-    searchCollection({commit}, resource) {
-        axios.post('/collections/search' , resource)
-            .then(response => {
-                commit('SEARCH_COLLECTION', response)
-                // console.log(response)
+                console.log(response)
+                commit('SEARCH_RESOURCE_COLLECTION', response.data)
+                 console.log(response.data)
             }).catch(error => {
             console.log(error)
         })

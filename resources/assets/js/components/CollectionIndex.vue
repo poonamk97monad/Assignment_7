@@ -103,9 +103,9 @@
                 this.$store.commit('VIEW_COLLECTION', {objCollection: objCollection})
             },
             updateCollection(collection) {
-                this.collection.id = collection.id;
-                this.collection.title = collection.title;
-                this.collection.description = collection.description;
+                this.collection.id           = collection.id;
+                this.collection.title        = collection.title;
+                this.collection.description  = collection.description;
             },
             updateCollectionDetails() {
 

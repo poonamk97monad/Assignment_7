@@ -7,8 +7,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Example Component</div>
                         <center>
-                            <h4>ID          : {{collectionsview.id}}</h4>
-                            <h4>TITLE       : {{collectionsview.title}}</h4>
+                            <h4>ID          :{{collectionsview.id}}</h4>
+                            <h4>TITLE       :{{collectionsview.title}}</h4>
                             <h5>SLUG        :{{collectionsview.slug}}</h5>
                             <h5>DESCRIPTION :{{collectionsview.description}}</h5>
                         </center>
@@ -28,12 +28,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="resource in collectionsview.resources">
-                    <td>{{resource.id}}</td>
-                    <td>{{resource.slug}}</td>
-                    <td>{{resource.description}}</td>
+                <tr v-for="objCollection in collectionsview.resources">
+                    <td>{{objCollection.id}}</td>
+                    <td>{{objCollection.slug}}</td>
+                    <td>{{objCollection.description}}</td>
                     <td>
-                        <button class="btn btn-danger" @click="removeResourceToCollection(resource,collectionsview.id)">Remove to Resource</button>
+                        <button class="btn btn-danger" @click="removeResourceToCollection(objCollection,collectionsview.id)">Remove to Resource</button>
                     </td>
                 </tr>
                 </tbody>
@@ -59,12 +59,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="resource in arrObjResources">
-                                <td>{{resource.title}}</td>
-                                <td>{{resource.slug}}</td>
-                                <td>{{resource.description}}</td>
+                            <tr v-for="ObjResource in arrObjResources">
+                                <td>{{ObjResource.title}}</td>
+                                <td>{{ObjResource.slug}}</td>
+                                <td>{{ObjResource.description}}</td>
                                 <td>
-                                    <button data-dismiss="modal" class="btn btn-success" @click="addResourceToCollection(resource,collectionsview.id)">Add Resource</button>
+                                    <button data-dismiss="modal" class="btn btn-success" @click="addResourceToCollection(ObjResource,collectionsview.id)">Add Resource</button>
                                 </td>
                             </tr>
                             </tbody>

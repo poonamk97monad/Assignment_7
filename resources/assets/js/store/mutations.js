@@ -52,11 +52,11 @@ let mutations = {
         // let index = state.resources.findIndex(item => item.id === resource.id)
         state.collectionsview = payload.objCollection
     },
-    SEARCH_RESOURCE(state, payload) {
-        console.log('payload')
+    SEARCH_RESOURCE_COLLECTION(state, payload) {
+        console.log("PAYLOAD")
         console.log(payload)
-        // let index = state.resources.findIndex(item => item.id === resource.id)
-        state.arrObjResources = payload
+        state.arrObjSearchPageData    = payload
+        // state.arrObjSearchCollections  = payload.arrObjCollectionSearch
     },
     SEARCH_COLLECTION(state, payload) {
         console.log('payload')

@@ -16,15 +16,16 @@ window.Vue = require('vue');
  */
 import store from './store/index'
 
-Vue.component('resources', require('./components/Resources.vue'));
+Vue.component('resources', require('./components/ResourceCreate.vue'));
 Vue.component('example-component', require('./components/ExampleComponent'));
 Vue.component('resources-index', require('./components/ResourcesIndex'));
-// Vue.component('resources-view', require('./components/ResourceView'));
 Vue.component('collection', require('./components/CollectionCreate'));
 Vue.component('collection-index', require('./components/CollectionIndex'));
 Vue.component('collection-view', require('./components/CollectionView'));
 Vue.component('resources-search', require('./components/ResourcesSearch'));
 Vue.component('collection-search', require('./components/CollectionSearch'));
+Vue.component('collection-resources-search', require('./components/SearchResourceCollection'));
+Vue.component('collection-resources-search-data', require('./components/SearchDataResourceCollection'));
 
 $(document).ready(function(){
     const app = new Vue({
@@ -33,29 +34,4 @@ $(document).ready(function(){
     });
 })
 
-// console.log("fgdfhg");
-// function LoadCoreApp(el, data) {
-//        const app = new Vue({
-//            el: '#resource-app',
-//            store,
-//            data: {
-//                newItem: {'title': '', 'description': ''}
-//            },
-//            createItem: function createItem() {
-//                alert("hgfhgjfgh");
-//                var input = this.newItem;
-//            }
-//     });
-//
-// }
-//
-// $(document).ready(function () {
-//     LoadCoreApp('#resource-app', {});
-// });
-// const app = new Vue({
-//     el: '#resource-app',
-//     data: {
-//         resource: {'title': '', 'description': ''}
-//     }
-// });
 

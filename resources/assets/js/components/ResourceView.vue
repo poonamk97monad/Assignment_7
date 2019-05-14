@@ -28,12 +28,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="collection in resourcesview.collections">
-                    <td>{{collection.id}}</td>
-                    <td>{{collection.slug}}</td>
-                    <td>{{collection.description}}</td>
+                <tr v-for="objCollection in resourcesview.collections">
+                    <td>{{objCollection.id}}</td>
+                    <td>{{objCollection.slug}}</td>
+                    <td>{{objCollection.description}}</td>
                     <td>
-                        <button class="btn btn-danger" @click="removeCollectionToResource(collection,resourcesview.id)">Remove to Resource</button>
+                        <button class="btn btn-danger" @click="removeCollectionToResource(objCollection,resourcesview.id)">Remove to Resource</button>
                     </td>
                 </tr>
                 </tbody>
@@ -58,12 +58,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="collection in arrObjCollections">
-                                <td>{{collection.title}}</td>
-                                <td>{{collection.slug}}</td>
-                                <td>{{collection.description}}</td>
+                            <tr v-for="objCollection in arrObjCollections">
+                                <td>{{objCollection.title}}</td>
+                                <td>{{objCollection.slug}}</td>
+                                <td>{{objCollection.description}}</td>
                                 <td>
-                                    <button class="btn btn-success" @click="addCollectionToResource(collection,resourcesview.id)">Add to Resource</button>
+                                    <button class="btn btn-success" data-dismiss="modal" @click="addCollectionToResource(objCollection,resourcesview.id)">Add to Resource</button>
                                 </td>
                             </tr>
                             </tbody>

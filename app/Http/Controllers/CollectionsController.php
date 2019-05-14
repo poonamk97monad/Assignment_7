@@ -7,7 +7,6 @@ use App\Module\Collection;
 use App\Helpers\CreateSlug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
-use App\Http\Requests\StoreAddResourceToCollection;
 
 class CollectionsController extends Controller
 {
@@ -23,9 +22,12 @@ class CollectionsController extends Controller
         return view('collection.index', compact('arrObjCollections'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
+    /**
+     * Display the specified resource.
+     * @return \Illuminate\Http\Response
+     */
 
-
-    public function getindex() {
+    public function getIndexData() {
 
         $arrObjCollections   = Collection::with('resources')->latest()->paginate(5);
         $arrObjResources     = Resource::all();
@@ -33,27 +35,17 @@ class CollectionsController extends Controller
 
     }
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-
-        return view('create_collections');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $strRequest
+     * @param  \Illuminate\Http\Request  $objCollectionRequest
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $objResourcetoCollectionRequest) {
+    public function postStoreCollection(Request $objCollectionRequest) {
 
         $arrFormData = array(
-            'title'              =>   $objResourcetoCollectionRequest->title,
-            'slug'               =>   (new CreateSlug())->get($objResourcetoCollectionRequest->title),
-            'description'        =>   $objResourcetoCollectionRequest->description
+            'title'              =>   $objCollectionRequest->title,
+            'slug'               =>   (new CreateSlug())->get($objCollectionRequest->title),
+            'description'        =>   $objCollectionRequest->description
         );
         $collection = Collection::create($arrFormData);
 
@@ -61,47 +53,30 @@ class CollectionsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     * @param  int  $intId
-     * @return \Illuminate\Http\Response
-     */
-    public function show($intId) {
-
-        $objCollection      = Collection::findOrFail($intId);
-        $arrObjResources    = Resource::all();
-
-        return view('collection.view', array('objCollection' => $objCollection, 'arrObjResources' => $arrObjResources));
-
-    }
-
-
-    /**
      * Show the form for delete the specified resource.
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id) {
+    public function deleteCollection($id) {
         Collection::destroy($id);
 
         return response()->json("ok");
     }
 
 
-
     /**
-     * Show the form for editing the specified resource.
-     *
+     * Show the form for editing the specified Collection
+     * @param  \Illuminate\Http\Request  $objCollectionUpdateRequest
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $objCollectionUpdateRequest,$intCollectionId) {
+    public function postUpdateCollection(Request $objCollectionUpdateRequest,$intCollectionId) {
 
         $objCollection = Collection::find($intCollectionId);
         $arrFormData = array(
             'title'       => $objCollectionUpdateRequest->title,
             'slug'        => (new CreateSlug())->get($objCollectionUpdateRequest->title),
             'description' => $objCollectionUpdateRequest->description
-//            'file_upload'        =>   $objCollectiontoCollectionRequest->file_upload
         );
         $objCollection->update($arrFormData);
 
@@ -110,9 +85,8 @@ class CollectionsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $intCollectionId,$intResourceId
+     * @param  \Illuminate\Http\Request   $objRequest
+     * @param  int  $intCollectionId
      * @return \Illuminate\Http\Response
      */
     public function postAddResourceToCollection(Request $objRequest,$intCollectionId) {
@@ -125,7 +99,8 @@ class CollectionsController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param  int $intCollectionId,$intResourceId
+     * @param  \Illuminate\Http\Request   $objRequest
+     * @param  int $intCollectionId
      * @return \Illuminate\Http\Response
      */
     public function postRemoveResourceToCollection(Request $objRequest,$intCollectionId) {
@@ -150,7 +125,11 @@ class CollectionsController extends Controller
         return response()->json(['id' => $intUserId, 'status' => 200, 'message', 'Success']);
     }
 
-
+    /**
+     * for search  specified collection
+     * @param $objRequest
+     * @return $arrObjSearch
+     */
     public function collectionSearch(Request $objRequest) {
 
         $arrObjSearch = Collection::where('title',$objRequest->search)->get();

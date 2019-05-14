@@ -1,29 +1,29 @@
 <template>
     <div>
-        <div>
-              <input type="text" v-model="resource.search"  placeholder="search...."  >
-                <button type="submit" class="btn btn-primary" @click.prevent="searchResource(resource)">Search</button>
-
-
+        <div v-if="!resourcesview">
+            <div>
+                <input type="text" v-model="objResource.search"  placeholder="search...."  >
+                <button type="submit" class="btn btn-primary" @click.prevent="searchResource(objResource)">Search</button>
+            </div>
         </div>
     </div>
 </template>
 <script>
     import {mapState} from 'vuex'
+    import resourcesView from './ResourceView'
     export default {
 
         data(){
             return{
-                resource:{
+                objResource:{
                     search:''
                 }
             }
         },
         methods:{
-            searchResource(resource){
-                this.$store.dispatch('searchResource', resource)
+            searchResource(objResource){
+                this.$store.dispatch('searchResource', objResource)
             }
-
         },
         computed: {
             ...mapState([
@@ -31,8 +31,9 @@
                 'resourcesdata',
                 'resourcesview'
             ]),
-
         },
-
+        components: {
+            resourcesView:resourcesView
+        },
     }
 </script>

@@ -8,8 +8,9 @@ let state = {
     intResourceId: {},
     arrObjCollections:[],
     arrObjResources:[],
-    isFavorites:{}
-
+    isFavorites:{},
+    arrObjSearchPageData:[],
+    // arrObjSearchCollections:[]
 
 }
 

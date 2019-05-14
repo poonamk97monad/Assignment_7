@@ -36,6 +36,8 @@ Route::resource('collections','CollectionsController');
 //Route::get('/home', 'HomeController@index')->name('home');
 //Route::post('/submit', 'ContactFormController@store');
 
-Route::post('resources/search', 'ResourcesController@resourceSearch');
+Route::get('resources/search/search', 'ResourcesController@search');
 
 Route::post('collections/search', 'CollectionsController@collectionSearch');
+
+Route::post('collections/search/data', 'ResourcesController@searchResourceCollection');

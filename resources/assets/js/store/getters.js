@@ -14,12 +14,6 @@ let getters = {
     intResourceId: state => {
         return state.intResourceId
     },
-    resourcesadd: state => {
-        return state.resourcesadd
-    },
-    resourcesadd: state => {
-        return state.resourcesadd
-    },
     collections: state => {
     return state.collections
     },
