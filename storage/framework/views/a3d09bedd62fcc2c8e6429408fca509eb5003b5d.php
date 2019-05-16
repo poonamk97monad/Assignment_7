@@ -12,13 +12,9 @@
             </ul>
         </div>
     <?php endif; ?>
+<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <div id="app">
         <div class="container" >
-            <div class="container" >
-                <div class="col-md-9">
-                    <resources-search></resources-search>
-                </div>
-            </div>
             <div class="container" >
             <div class="row">
                 <div class="col-md-3">

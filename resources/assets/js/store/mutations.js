@@ -63,6 +63,9 @@ let mutations = {
         console.log(payload)
         // let index = state.resources.findIndex(item => item.id === resource.id)
         state.arrObjCollections = payload
+    },
+    ELASTIC_SEARCH(state, payload){
+        state.arrObjElasticSearchResult = payload
     }
 }
 export default mutations

@@ -1,5 +1,7 @@
 <template>
     <div>
+        <button class="btn btn-primary" @click="backToResource()">Back to Resources</button>
+        <button class="btn btn-primary" @click="backToCollection()">Back to Collections</button>
         <h2>search page</h2>
         <div>
             <input type="text"  v-model="objSearch.search" placeholder="search...."  >
@@ -35,7 +37,16 @@
         methods:{
             searchResourceCollection(objSearch){
                 this.$store.dispatch('searchResourceCollection', objSearch)
-            }
+            },
+            backToCollection() {
+                window.location.href="http://127.0.0.1:8000/collections"
+
+            },
+            backToResource() {
+                window.location.href="http://127.0.0.1:8000/resources"
+
+            },
+
         },
         computed: {
             ...mapState([

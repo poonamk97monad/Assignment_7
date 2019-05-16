@@ -17,7 +17,7 @@
                         </div>
                         <div class="modal-body">
 
-                            <form @submit="createResource(objResource)">
+                            <form @submit="createResource(objResource)" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label class="col-md-4 text-right">Enter Title of File</label>
                                     <div class="col-md-8">
@@ -30,6 +30,7 @@
                                         <input type="text" id="description" v-model="objResource.description" class="form-control input-lg" />
                                     </div>
                                 </div>
+                                <!--<input type="file" class="form-control" @change="onImageChange" id="file_upload" name="file_upload"/>-->
                                 <br /><br /><br />
                                 <div class="form-group">
                                     <button data-dismiss="modal" class="btn btn-block btn-primary" @click.prevent="createResource(objResource)" >Submit</button>
@@ -57,11 +58,19 @@
                 objResource: {
                     title: '',
                     description: ''
-                }
+
+                },
+                file_upload:[]
             }
         },
         methods: {
+            // onImageChange(event){
+            //     let files = event.target.files;
+            //     if (files.length) this.file_upload = files[0];
+            //     console.log(this.file_upload)
+            // },
             createResource(objResource) {
+
                 if (this.title && this.description) {
                     return true;
                 }
@@ -72,6 +81,15 @@
                 if (!this.description) {
                     this.errors.push('description required.');
                 }
+                // const config = {
+                //     headers: {'content-type': 'multipart/form-data'}
+                // }
+                // let data = new FormData();
+                // data.append('file_upload', this.file_upload);
+                // data.append('_method', 'put');
+                // console.log(objResource)
+                // console.log("DDDDD")
+                // console.log(this.file_upload)
                 this.$store.dispatch('createResource',objResource)
             }
         },

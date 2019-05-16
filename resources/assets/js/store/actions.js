@@ -1,6 +1,8 @@
 let actions = {
-    createResource({commit}, objResource) {
-        axios.post('/api/resources', objResource)
+    createResource({commit}, objResource,config) {
+        // console.log(objResource)
+        // console.log(config)
+        axios.post('/api/resources', objResource,config)
             .then(response => {
                 commit('CREATE_RESOURCE', response.data)
                 window.location.reload();
@@ -133,11 +135,9 @@ let actions = {
     //     })
     // },
     searchResourceCollection({commit}, search) {
-        axios.post('/collections/search/data' , search)
+        axios.post('/resources/search/data' , search)
             .then(response => {
-                console.log(response)
                 commit('SEARCH_RESOURCE_COLLECTION', response.data)
-                 console.log(response.data)
             }).catch(error => {
             console.log(error)
         })
@@ -147,6 +147,16 @@ let actions = {
         axios.post('/api/collections/add_to_favortted/' + collection.id, collection)
             .then(response => {
                 commit('FAVORITES_COLLECTION', {id: response.data.id})
+            }).catch(error => {
+            console.log(error)
+        })
+    },
+
+    elasticSearchData({commit}, payload) {
+        axios.post('/elasticsearch' ,payload)
+            .then(response => {
+                commit('ELASTIC_SEARCH',response.data)
+
             }).catch(error => {
             console.log(error)
         })

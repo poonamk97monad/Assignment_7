@@ -2,7 +2,10 @@
     <div>
         <div v-if="!resourcesview">
             <h4 class="text-center font-weight-bold">Resources</h4>
-            <button class="btn btn-info" @click="searchResourceCollection()"><i style="color:white" class="fa fa-trash">search</i></button>
+            <button class="btn btn-info" @click="searchResourceCollection()"><i style="color:white" class="fa fa-trash">Vue  search</i></button>
+             <br><br>
+            <button class="btn btn-info" @click="elasticSearch()"><i style="color:white" class="fa fa-trash">Elastic Search</i></button>
+            <br><br>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -11,6 +14,7 @@
                     <th scope="col">Slug</th>
                     <th scope="col">Description</th>
                     <th scope="col"> Action</th>
+                    <th scope="col"> Favorites/UnFavorites</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -117,6 +121,9 @@
             addToResourceFavortted(objResource) {
                 this.$store.dispatch('addToResourceFavortted',objResource)
             },
+            elasticSearch(){
+                window.location.href="http://127.0.0.1:8000/searchPage"
+            }
         },
         computed: {
             ...mapState([

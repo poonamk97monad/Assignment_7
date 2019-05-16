@@ -1,5 +1,6 @@
 <?php
-
+use App\Module\Resource;
+use App\Module\Collection;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +39,26 @@ Route::resource('collections','CollectionsController');
 
 Route::get('resources/search/search', 'ResourcesController@search');
 
-Route::post('collections/search', 'CollectionsController@collectionSearch');
+Route::post('resources/search/data', 'ResourcesController@searchResourceCollection');
 
-Route::post('collections/search/data', 'ResourcesController@searchResourceCollection');
+
+Route::get('collections/search/search', 'CollectionsController@search');
+
+
+Route::get('/searchPage', 'ResourcesController@elasticSearch');
+
+
+Route::post('/elasticsearch', 'ResourcesController@elasticSearchData');
+//
+//Route::post('/elasticsearch', function(){
+//   dd("vnxkjv");
+////    Resource::createIndex($shards = null, $replicas = null);
+////
+////    Resource::putMapping($ignoreConflicts = true);
+////
+////    $obj=Resource::addAllToIndex();
+////
+//
+//    return view('searchPage');
+//
+//});

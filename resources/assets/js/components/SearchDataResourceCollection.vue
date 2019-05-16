@@ -1,13 +1,5 @@
 <template>
     <div>
-        <!--<div>-->
-            <!--<form >-->
-                <!--<select >-->
-                    <!--<option value="collection">Collection</option>-->
-                    <!--<option value="resource">Resource</option>-->
-                <!--</select >-->
-            <!--</form>-->
-        <!--</div>-->
         <div class="container" >
             <div class="col-md-6">
               <h2>Search Result</h2>
@@ -46,7 +38,8 @@
         methods:{
             searchResourceCollection(objSearch){
                 this.$store.dispatch('searchResourceCollection', objSearch)
-            }
+            },
+
         },
         computed: {
             ...mapState([

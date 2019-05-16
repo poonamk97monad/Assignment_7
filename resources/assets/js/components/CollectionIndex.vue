@@ -2,12 +2,14 @@
     <div>
         <div v-if="!collectionsview">
             <h4 class="text-center font-weight-bold">Collection</h4>
+            <button class="btn btn-info" @click="searchResourceCollection()"><i style="color:white" class="fa fa-trash">search</i></button>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col"> Action</th>
+                    <th scope="col"> Favorites/UnFavorites</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -115,6 +117,10 @@
 
                 this.$store.dispatch('addToCollectionFavortted',collection)
             },
+            searchResourceCollection() {
+                window.location.href="http://127.0.0.1:8000/collections/search/search"
+
+            }
         },
         computed: {
             ...mapState([

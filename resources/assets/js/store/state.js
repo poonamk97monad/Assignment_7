@@ -10,6 +10,7 @@ let state = {
     arrObjResources:[],
     isFavorites:{},
     arrObjSearchPageData:[],
+    arrObjElasticSearchResult:[]
     // arrObjSearchCollections:[]
 
 }

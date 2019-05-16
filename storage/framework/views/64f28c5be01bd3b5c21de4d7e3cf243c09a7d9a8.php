@@ -15,11 +15,6 @@
 <div id="app">
     <div class="container" >
         <div class="container" >
-            <div class="col-md-9">
-                <collection-search></collection-search>
-            </div>
-        </div>
-        <div class="container" >
             <div class="row">
                 <div class="col-md-3">
                     <collection></collection>

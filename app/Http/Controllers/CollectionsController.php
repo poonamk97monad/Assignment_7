@@ -17,10 +17,8 @@ class CollectionsController extends Controller
      */
     public function index() {
 
-        $arrObjCollections = Collection::latest()->paginate(5)
-        ;
-        return view('collection.index', compact('arrObjCollections'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        $arrObjCollections = Collection::latest();
+        return view('collection.index', compact('arrObjCollections'));
     }
     /**
      * Display the specified resource.
@@ -31,6 +29,7 @@ class CollectionsController extends Controller
 
         $arrObjCollections   = Collection::with('resources')->latest()->paginate(5);
         $arrObjResources     = Resource::all();
+
         return response()->json(["arrObjCollections" => $arrObjCollections,"arrObjResources" => $arrObjResources]);
 
     }
@@ -41,11 +40,12 @@ class CollectionsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function postStoreCollection(Request $objCollectionRequest) {
-
+       $modeltype = 'collection';
         $arrFormData = array(
             'title'              =>   $objCollectionRequest->title,
             'slug'               =>   (new CreateSlug())->get($objCollectionRequest->title),
-            'description'        =>   $objCollectionRequest->description
+            'description'        =>   $objCollectionRequest->description,
+            'modeltype'          => $modeltype,
         );
         $collection = Collection::create($arrFormData);
 
@@ -134,6 +134,15 @@ class CollectionsController extends Controller
 
         $arrObjSearch = Collection::where('title',$objRequest->search)->get();
         return response()->json($arrObjSearch);
+
+    }
+
+    /**
+     * for view search  page
+     * @return view
+     */
+    public function search() {
+        return view('search');
 
     }
 }

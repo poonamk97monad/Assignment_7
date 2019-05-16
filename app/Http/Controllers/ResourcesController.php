@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\CreateSlug;
+
 use App\Module\Resource;
 use App\Module\Collection;
+use App\Helpers\CreateSlug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -29,6 +30,8 @@ class ResourcesController extends Controller
     public function getIndexData() {
         $arrObjResources    = Resource::with('collections')->latest()->paginate(5);
         $arrObjCollections  = Collection::all();
+//        Resource::putMapping($ignoreConflicts = true);
+        Resource::addAllToIndex();
         return response()->json(["arrObjResources" => $arrObjResources, "arrObjCollections" => $arrObjCollections]);
     }
 
@@ -39,12 +42,15 @@ class ResourcesController extends Controller
      * @return json
      */
     public function postStoreResource(Request $objResourceRequest) {
+        $strModelType = 'resource';
         $arrFormData = array(
             'title'       => $objResourceRequest->title,
             'slug'        => (new CreateSlug())->get($objResourceRequest->title),
             'description' => $objResourceRequest->description,
+            'modeltype'   => $strModelType,
         );
         $objResource = Resource::create($arrFormData);
+
         return response()->json($objResource);
     }
 
@@ -122,7 +128,7 @@ class ResourcesController extends Controller
     }
 
     /**
-     * for search  specified resource
+     * for view search  page
      * @param $objRequest
      * @return json
      */
@@ -130,6 +136,12 @@ class ResourcesController extends Controller
         return view('search');
 
     }
+
+    /**
+     * for search  specified resource and collection
+     * @param $objRequest
+     * @return json
+     */
     public function searchResourceCollection(Request $objRequest) {
         $objSearch = $objRequest->search;
 
@@ -146,11 +158,12 @@ class ResourcesController extends Controller
         }
         if (isset($objRequest->idsort)) {
             $objSort = $objRequest->idsort;
+
             if ('descending' == $objSort) {
-                $arrObjSearchResult = $arrObjSearchResult->orderBy('title', 'desc');
+                $arrObjSearchResult = $arrObjSearchResult->orderBy('id', 'desc');
             }
             if ('ascending' == $objSort) {
-                $arrObjSearchResult = $arrObjSearchResult->orderBy('title', 'asc');
+                $arrObjSearchResult = $arrObjSearchResult->orderBy('id', 'asc');
             }
         }
          $arrObjSearchResult = $arrObjSearchResult->get();
@@ -158,4 +171,43 @@ class ResourcesController extends Controller
         return response()->json(["arrObjSearchResult" => $arrObjSearchResult]);
 
     }
+
+    public function elasticSearch() {
+        return view('searchPage');
+
+    }
+
+    /**
+     * @param Request $objRequest
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function elasticSearchData(Request $objRequest) {
+        Resource::putMapping($ignoreConflicts = true);
+        $strSearch          = $objRequest->search;
+        $strSort            = $objRequest->idsort;
+        $objFilter          = $objRequest->modeltype;
+        $arrObjSort         = explode (".", $strSort);
+        $strSortField       = $arrObjSort[0];
+        $strSortOrder       = $arrObjSort[1];
+
+        if(isset($objRequest->search)) {
+            $arrObjSearchResult = Resource::complexSearch(array(
+                'body' => [
+                    'query' => [
+                     'match'    => ['description' => $strSearch ],
+//                  'filter'   => ['term'  => ['modeltype' => $objFilter ]]
+//                  'filter'   => ['term'  => ['id' => "58" ]]
+                    ],
+                    "sort" => [$strSortField => $strSortOrder]
+
+                ]
+            ));
+        }
+        else if(!isset($objRequest->search)) {
+            $arrObjSearchResult = Resource::searchByQuery(null, null, null, null, ['id' => $strSortOrder]);
+
+
+        }
+        return response()->json(["arrObjSearchResult" => $arrObjSearchResult]);
+     }
 }
