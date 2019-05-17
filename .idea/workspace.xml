@@ -2,36 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ccee9a93-8a4d-4779-a6bf-6e1df356691a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Assignment_7.iml" afterPath="$PROJECT_DIR$/.idea/Assignment_7.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" afterPath="$PROJECT_DIR$/.idea/php.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CollectionsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/CollectionsController.php" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ResourcesController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/ResourcesController.php" />
-      <change beforePath="$PROJECT_DIR$/app/Module/Collection.php" afterPath="$PROJECT_DIR$/app/Module/Collection.php" />
-      <change beforePath="$PROJECT_DIR$/app/Module/Resource.php" afterPath="$PROJECT_DIR$/app/Module/Resource.php" />
-      <change beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" afterPath="$PROJECT_DIR$/config/app.php" />
-      <change beforePath="$PROJECT_DIR$/config/scout.php" afterPath="$PROJECT_DIR$/config/scout.php" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_04_16_075000_create_resources_table.php" afterPath="$PROJECT_DIR$/database/migrations/2019_04_16_075000_create_resources_table.php" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_04_16_075059_create_collections_table.php" afterPath="$PROJECT_DIR$/database/migrations/2019_04_16_075059_create_collections_table.php" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" afterPath="$PROJECT_DIR$/public/js/app.js" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/app.js" afterPath="$PROJECT_DIR$/resources/assets/js/app.js" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/components/CollectionIndex.vue" afterPath="$PROJECT_DIR$/resources/assets/js/components/CollectionIndex.vue" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/components/CollectionView.vue" afterPath="$PROJECT_DIR$/resources/assets/js/components/CollectionView.vue" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/components/ResourceCreate.vue" afterPath="$PROJECT_DIR$/resources/assets/js/components/ResourceCreate.vue" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/components/ResourcesIndex.vue" afterPath="$PROJECT_DIR$/resources/assets/js/components/ResourcesIndex.vue" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/components/ResourcesSearch.vue" afterPath="$PROJECT_DIR$/resources/assets/js/components/ResourcesSearch.vue" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/components/SearchDataResourceCollection.vue" afterPath="$PROJECT_DIR$/resources/assets/js/components/SearchDataResourceCollection.vue" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/components/SearchResourceCollection.vue" afterPath="$PROJECT_DIR$/resources/assets/js/components/SearchResourceCollection.vue" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/store/actions.js" afterPath="$PROJECT_DIR$/resources/assets/js/store/actions.js" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/store/mutations.js" afterPath="$PROJECT_DIR$/resources/assets/js/store/mutations.js" />
-      <change beforePath="$PROJECT_DIR$/resources/assets/js/store/state.js" afterPath="$PROJECT_DIR$/resources/assets/js/store/state.js" />
-      <change beforePath="$PROJECT_DIR$/resources/views/collection/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/collection/index.blade.php" />
-      <change beforePath="$PROJECT_DIR$/resources/views/resource/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/resource/index.blade.php" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
-      <change beforePath="$PROJECT_DIR$/storage/framework/views/64f28c5be01bd3b5c21de4d7e3cf243c09a7d9a8.php" afterPath="$PROJECT_DIR$/storage/framework/views/64f28c5be01bd3b5c21de4d7e3cf243c09a7d9a8.php" />
-      <change beforePath="$PROJECT_DIR$/storage/framework/views/a3d09bedd62fcc2c8e6429408fca509eb5003b5d.php" afterPath="$PROJECT_DIR$/storage/framework/views/a3d09bedd62fcc2c8e6429408fca509eb5003b5d.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -184,8 +155,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -197,6 +166,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -242,17 +213,18 @@
       <workItem from="1557893573906" duration="599000" />
       <workItem from="1557909491204" duration="599000" />
       <workItem from="1557979879692" duration="598000" />
+      <workItem from="1558066283699" duration="599000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13639000" />
+    <option name="totallyTimeSpent" value="14238000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2841349" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28745162" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />

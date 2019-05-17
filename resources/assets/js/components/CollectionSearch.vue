@@ -23,13 +23,11 @@
             searchCollection(collection){
                 this.$store.dispatch('searchCollection', collection)
             }
-
         },
         computed: {
             ...mapState([
-                'collections',
-                'collectionsdata',
-                'collectionsview'
+                'objCollections',
+                'objCollectionsview'
             ]),
 
         },

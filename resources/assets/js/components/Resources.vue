@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!resourcesview">
+        <div v-if="!objResourcesView">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#resourceModal">Add New Resource</button>
             <div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="favoritesModalLabel">
                 <div class="modal-dialog" role="document">
@@ -10,12 +10,12 @@
                             <h4 class="modal-title" id="favoritesModalLabel">Resources list</h4>
                         </div>
                         <div class="modal-body">
-                            <p v-if="errors.length">
+                            <h4 v-if="errors.length">
                                 <b>Please correct the following error(s):</b>
                             <ul>
                                 <li v-for="error in errors">{{ error }}</li>
                             </ul>
-                            </p>
+                            </h4>
                             <form @submit="createResource(resource)">
                                 <div class="form-group">
                                     <label class="col-md-4 text-right">Enter Title of File</label>
@@ -30,19 +30,10 @@
                                     </div>
                                 </div>
                                 <br/><br/><br/>
-                                <!--<div class="form-group">-->
-                                    <!--<label class="col-md-4 text-right">Select file upload</label>-->
-                                    <!--<div class="col-md-8">-->
-                                        <!--<input type="file" v-model="resource.file_upload"  />-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <br /><br /><br />
                                 <div class="form-group">
-                                    <button data-dismiss="modal" class="btn btn-block btn-primary" @click.prevent="createResource(resource)" >Submit</button>
+                                    <button :disabled="!isValid" data-dismiss="modal" class="btn btn-block btn-primary" @click.prevent="createResource(resource)" >Submit</button>
                                 </div>
-                                <!--<div class="form-group text-center">-->
-                                    <!--<input type="submit" name="add" class="btn btn-primary input-lg" value="Add" @click.prevent="createResource(resource)" />-->
-                                <!--</div>-->
+
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -90,9 +81,8 @@
         },
         computed: {
             ...mapState([
-                'resources',
-                'resourcesdata',
-                'resourcesview'
+                'objResources',
+                'objResourcesView'
             ]),
             isValid() {
                 return this.resource.title !== '' && this.resource.description !== ''

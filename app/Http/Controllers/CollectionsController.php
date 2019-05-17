@@ -12,10 +12,10 @@ class CollectionsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
 
         $arrObjCollections = Collection::latest();
         return view('collection.index', compact('arrObjCollections'));
@@ -25,7 +25,8 @@ class CollectionsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getIndexData() {
+    public function getIndexData()
+    {
 
         $arrObjCollections   = Collection::with('resources')->latest()->paginate(5);
         $arrObjResources     = Resource::all();
@@ -39,38 +40,43 @@ class CollectionsController extends Controller
      * @param  \Illuminate\Http\Request  $objCollectionRequest
      * @return \Illuminate\Http\Response
      */
-    public function postStoreCollection(Request $objCollectionRequest) {
-       $modeltype = 'collection';
+    public function postStoreCollection(Request $objCollectionRequest)
+    {
         $arrFormData = array(
             'title'              =>   $objCollectionRequest->title,
             'slug'               =>   (new CreateSlug())->get($objCollectionRequest->title),
             'description'        =>   $objCollectionRequest->description,
-            'modeltype'          => $modeltype,
         );
-        $collection = Collection::create($arrFormData);
-
-        return response()->json($collection);
+        Collection::create($arrFormData);
+        $arrObjCollections   = Collection::with('resources')->latest()->paginate(5);
+        $arrObjResources     = Resource::all();
+        return response()->json(["arrObjCollections" => $arrObjCollections,"arrObjResources" => $arrObjResources]);
     }
 
     /**
      * Show the form for delete the specified resource.
-     * @param  int  $id
+     * @param $intId
      * @return \Illuminate\Http\Response
      */
-    public function deleteCollection($id) {
-        Collection::destroy($id);
-
-        return response()->json("ok");
+    public function deleteCollection($intId)
+    {
+        $objCollection = Collection::find($intId);
+        $objCollection->resources()->wherePivot('collection_id','=',$intId)->detach();
+        $objCollection->delete();
+        $arrObjCollections   = Collection::with('resources')->latest()->paginate(5);
+        $arrObjResources     = Resource::all();
+        return response()->json(["arrObjCollections" => $arrObjCollections,"arrObjResources" => $arrObjResources]);
     }
 
 
     /**
      * Show the form for editing the specified Collection
      * @param  \Illuminate\Http\Request  $objCollectionUpdateRequest
-     * @param  int  $id
+     * @param  int  $intCollectionId
      * @return \Illuminate\Http\Response
      */
-    public function postUpdateCollection(Request $objCollectionUpdateRequest,$intCollectionId) {
+    public function postUpdateCollection(Request $objCollectionUpdateRequest, $intCollectionId)
+    {
 
         $objCollection = Collection::find($intCollectionId);
         $arrFormData = array(
@@ -79,8 +85,9 @@ class CollectionsController extends Controller
             'description' => $objCollectionUpdateRequest->description
         );
         $objCollection->update($arrFormData);
-
-        return response()->json($objCollection);
+        $arrObjCollections   = Collection::with('resources')->latest()->paginate(5);
+        $arrObjResources     = Resource::all();
+        return response()->json(["arrObjCollections" => $arrObjCollections,"arrObjResources" => $arrObjResources]);
     }
 
     /**
@@ -89,7 +96,8 @@ class CollectionsController extends Controller
      * @param  int  $intCollectionId
      * @return \Illuminate\Http\Response
      */
-    public function postAddResourceToCollection(Request $objRequest,$intCollectionId) {
+    public function postAddResourceToCollection(Request $objRequest, $intCollectionId)
+    {
         $objCollection = Collection::find($intCollectionId);
         $objCollection->resources()->attach($objRequest->id);
         $objCollection->resources;
@@ -103,7 +111,8 @@ class CollectionsController extends Controller
      * @param  int $intCollectionId
      * @return \Illuminate\Http\Response
      */
-    public function postRemoveResourceToCollection(Request $objRequest,$intCollectionId) {
+    public function postRemoveResourceToCollection(Request $objRequest, $intCollectionId)
+    {
 
         $objCollection = Collection::findOrFail($intCollectionId);
         $objCollection->resources()->detach($objRequest->id);
@@ -114,8 +123,10 @@ class CollectionsController extends Controller
     /**
      * add in favorites
      * @param $intUserId
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function postSetFavorite($intUserId) {
+    public function postSetFavorite($intUserId)
+    {
         $boolIsFavoritted = Redis::SISMEMBER('favorite:vuecollection', $intUserId);
         if ($boolIsFavoritted == 1) {
             Redis::srem('favorite:vuecollection', $intUserId);
@@ -127,11 +138,11 @@ class CollectionsController extends Controller
 
     /**
      * for search  specified collection
-     * @param $objRequest
+     * @param  \Illuminate\Http\Request $objRequest
      * @return $arrObjSearch
      */
-    public function collectionSearch(Request $objRequest) {
-
+    public function collectionSearch(Request $objRequest)
+    {
         $arrObjSearch = Collection::where('title',$objRequest->search)->get();
         return response()->json($arrObjSearch);
 
@@ -141,7 +152,8 @@ class CollectionsController extends Controller
      * for view search  page
      * @return view
      */
-    public function search() {
+    public function search()
+    {
         return view('search');
 
     }

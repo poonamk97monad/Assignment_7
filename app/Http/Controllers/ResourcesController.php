@@ -14,10 +14,10 @@ class ResourcesController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
         $arrObjResource = Resource::latest()->paginate(5);
         return view('resource.index', compact('arrObjResource'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -27,50 +27,56 @@ class ResourcesController extends Controller
      * Display the specified resource.
      * @return \Illuminate\Http\Response
      */
-    public function getIndexData() {
+    public function getIndexData()
+    {
         $arrObjResources    = Resource::with('collections')->latest()->paginate(5);
         $arrObjCollections  = Collection::all();
-//        Resource::putMapping($ignoreConflicts = true);
+        Resource::putMapping($ignoreConflicts = true);
         Resource::addAllToIndex();
         return response()->json(["arrObjResources" => $arrObjResources, "arrObjCollections" => $arrObjCollections]);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
      * @param  \Illuminate\Http\Request $objResourceRequest
      * @return json
      */
-    public function postStoreResource(Request $objResourceRequest) {
-        $strModelType = 'resource';
-        $arrFormData = array(
+    public function postStoreResource(Request $objResourceRequest)
+    {
+        $strModelType  = 'resource';
+        $arrFormData   = array(
             'title'       => $objResourceRequest->title,
             'slug'        => (new CreateSlug())->get($objResourceRequest->title),
             'description' => $objResourceRequest->description,
             'modeltype'   => $strModelType,
         );
-        $objResource = Resource::create($arrFormData);
+        Resource::create($arrFormData);
+        $arrObjResources    = Resource::with('collections')->latest()->paginate(5);
+        $arrObjCollections  = Collection::all();
 
-        return response()->json($objResource);
+        return response()->json(["arrObjResources" => $arrObjResources, "arrObjCollections" => $arrObjCollections]);
     }
 
     /**
      *update resource in storage.
-     *
      * @param  \Illuminate\Http\Request $objResourceUpdateRequest
      * @param  id $intResourceId
      * @return json
      */
 
-    public function postUpdateResource(Request $objResourceUpdateRequest,$intResourceId) {
-        $objResource = Resource::find($intResourceId);
-        $arrFormData = array(
+    public function postUpdateResource(Request $objResourceUpdateRequest,$intResourceId)
+    {
+        $objResource      = Resource::find($intResourceId);
+        $arrFormData      = array(
             'title'       => $objResourceUpdateRequest->title,
             'slug'        => (new CreateSlug())->get($objResourceUpdateRequest->title),
             'description' => $objResourceUpdateRequest->description
         );
         $objResource->update($arrFormData);
-        return response()->json($objResource);
+        $arrObjResources    = Resource::with('collections')->latest()->paginate(5);
+        $arrObjCollections  = Collection::all();
+
+        return response()->json(["arrObjResources" => $arrObjResources, "arrObjCollections" => $arrObjCollections]);
     }
 
     /**
@@ -78,21 +84,25 @@ class ResourcesController extends Controller
      * @param  int $intId
      * @return json
      */
-    public function deleteResource($intId) {
-        Resource::destroy($intId);
-        $arrObjResources    = Resource::all();
+    public function deleteResource($intId)
+    {
+        $objResource = Resource::find($intId);
+        $objResource->collections()->wherePivot('resource_id','=',$intId)->detach();
+        $objResource->delete();
+        $arrObjResources    = Resource::with('collections')->latest()->paginate(5);
         $arrObjCollections  = Collection::all();
+
         return response()->json(["arrObjResources" => $arrObjResources, "arrObjCollections" => $arrObjCollections]);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  $objRequest
      * @param  $intResourceId
+     * @param  \Illuminate\Http\Request $objRequest
      * @return json
      */
-    public function postAddCollectionToResource(Request $objRequest, $intResourceId) {
+    public function postAddCollectionToResource(Request $objRequest, $intResourceId)
+    {
         $objResource = Resource::find($intResourceId);
         $objResource->collections()->attach($objRequest->id);
         $objResource->collections;
@@ -101,10 +111,12 @@ class ResourcesController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @param  \Illuminate\Http\Request $objRequest
      * @param  $intResourceId
      * @return \Illuminate\Http\Response
      */
-    public function postRemoveCollectionToResource(Request $objRequest, $intResourceId) {
+    public function postRemoveCollectionToResource(Request $objRequest, $intResourceId)
+    {
         $objResource = Resource::find($intResourceId);
         $objResource->collections()->detach($objRequest->id);
         $objResource->collections;
@@ -116,7 +128,8 @@ class ResourcesController extends Controller
      * @param $intUserId
      * @return redirect
      */
-    public function postSetFavorite($intUserId) {
+    public function postSetFavorite($intUserId)
+    {
         $boolIsFavoritted = Redis::SISMEMBER('favorite:vueresource', $intUserId);
         if ($boolIsFavoritted == 1) {
              Redis::srem('favorite:vueresource', $intUserId);
@@ -129,7 +142,6 @@ class ResourcesController extends Controller
 
     /**
      * for view search  page
-     * @param $objRequest
      * @return json
      */
     public function search() {
@@ -139,10 +151,11 @@ class ResourcesController extends Controller
 
     /**
      * for search  specified resource and collection
-     * @param $objRequest
+     * @param  \Illuminate\Http\Request $objRequest
      * @return json
      */
-    public function searchResourceCollection(Request $objRequest) {
+    public function searchResourceCollection(Request $objRequest)
+    {
         $objSearch = $objRequest->search;
 
         $arrObjSearchResult = [];
@@ -178,7 +191,7 @@ class ResourcesController extends Controller
     }
 
     /**
-     * @param Request $objRequest
+     * @param  \Illuminate\Http\Request $objRequest
      * @return \Illuminate\Http\JsonResponse
      */
     public function elasticSearchData(Request $objRequest) {

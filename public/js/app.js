@@ -2528,17 +2528,14 @@ window.Vue = __webpack_require__(12);
  */
 
 
-Vue.component('resources', __webpack_require__(50));
 Vue.component('example-component', __webpack_require__(55));
+Vue.component('resources', __webpack_require__(50));
 Vue.component('resources-index', __webpack_require__(58));
+Vue.component('resources-search', __webpack_require__(69));
+Vue.component('collection-search', __webpack_require__(72));
 Vue.component('collection', __webpack_require__(61));
 Vue.component('collection-index', __webpack_require__(66));
 Vue.component('collection-view', __webpack_require__(5));
-
-Vue.component('resources-search', __webpack_require__(69));
-
-Vue.component('collection-search', __webpack_require__(72));
-
 Vue.component('collection-resources-search', __webpack_require__(75));
 Vue.component('collection-resources-search-data', __webpack_require__(81));
 
@@ -46079,11 +46076,8 @@ var actions = {
     createResource: function createResource(_ref, objResource, config) {
         var commit = _ref.commit;
 
-        // console.log(objResource)
-        // console.log(config)
         axios.post('/api/resources', objResource, config).then(function (response) {
             commit('CREATE_RESOURCE', response.data);
-            window.location.reload();
         }).catch(function (error) {
             console.log(error);
         });
@@ -46091,7 +46085,7 @@ var actions = {
     addCollectionToResource: function addCollectionToResource(_ref2, payload) {
         var commit = _ref2.commit;
 
-        axios.post('/api/resources/' + payload.intResourceId, payload.resource).then(function (response) {
+        axios.post('/api/resources/' + payload.intResourceId, payload.objResource).then(function (response) {
             commit('ADD_REMOVE_COLLECTION_TO_RESOURCE', { objResource: response.data });
         }).catch(function (error) {
             console.log(error);
@@ -46100,7 +46094,7 @@ var actions = {
     removeCollectionToResource: function removeCollectionToResource(_ref3, payload) {
         var commit = _ref3.commit;
 
-        axios.post('/api/resources/remove/' + payload.intResourceId, payload.resource).then(function (response) {
+        axios.post('/api/resources/remove/' + payload.intResourceId, payload.objResource).then(function (response) {
             commit('ADD_REMOVE_COLLECTION_TO_RESOURCE', { objResource: response.data });
         }).catch(function (error) {
             console.log(error);
@@ -46111,6 +46105,7 @@ var actions = {
 
         axios.get('/api/resources').then(function (response) {
             commit('FETCH_RESOURCES_COLLECTIONS', response.data);
+            console.log(response.data);
         }).catch(function (error) {
             console.log(error);
         });
@@ -46128,46 +46123,41 @@ var actions = {
         var commit = _ref6.commit;
 
         axios.delete('/api/resources/' + objResource.id).then(function (response) {
-            if (response.data === 'ok') commit('DELETE_RESOURCE', resource);
-            window.location.reload();
-        }).catch(function (error) {
-            // console.log(error)
-        });
+            commit('DELETE_RESOURCE', response.data);
+            console.log(response.data);
+        }).catch(function (error) {});
     },
     updateResource: function updateResource(_ref7, objResource) {
         var commit = _ref7.commit;
 
         axios.post('/api/resources/update/' + objResource.id, objResource).then(function (response) {
-            if (response.data === 'ok') commit('UPDATE_RESOURCE', resource);
-            window.location.reload();
+            commit('UPDATE_RESOURCE', response.data);
         }).catch(function (error) {
             console.log(error);
         });
     },
-    createCollection: function createCollection(_ref8, collection) {
+    createCollection: function createCollection(_ref8, objCollection) {
         var commit = _ref8.commit;
 
-        axios.post('/api/collections', collection).then(function (response) {
+        axios.post('/api/collections', objCollection).then(function (response) {
             commit('CREATE_COLLECTION', response.data);
-            window.location.reload();
         }).catch(function (error) {
             console.log(error);
         });
     },
-    deleteCollection: function deleteCollection(_ref9, collection) {
+    deleteCollection: function deleteCollection(_ref9, objCollection) {
         var commit = _ref9.commit;
 
-        axios.delete('/api/collections/' + collection.id).then(function (response) {
-            if (response.data === 'ok') commit('DELETE_COLLECTION', collection);
-            window.location.reload();
+        console.log();
+        axios.delete('/api/collections/' + objCollection.id).then(function (response) {
+            commit('UPDATE_COLLECTION', response.data);
         }).catch(function (error) {});
     },
     updateCollection: function updateCollection(_ref10, collection) {
         var commit = _ref10.commit;
 
         axios.post('/api/collections/update/' + collection.id, collection).then(function (response) {
-            if (response.data === 'ok') commit('UPDATE_COLLECTION', collection);
-            window.location.reload();
+            commit('UPDATE_COLLECTION', response.data);
         }).catch(function (error) {
             console.log(error);
         });
@@ -46175,7 +46165,7 @@ var actions = {
     addResourceToCollection: function addResourceToCollection(_ref11, payload) {
         var commit = _ref11.commit;
 
-        axios.post('/api/collections/' + payload.intCollectionId, payload.collection).then(function (response) {
+        axios.post('/api/collections/' + payload.intCollectionId, payload.objCollection).then(function (response) {
             commit('ADD_REMOVE_RESOURCE_TO_COLLECTION', { objCollection: response.data });
         }).catch(function (error) {
             console.log(error);
@@ -46184,13 +46174,13 @@ var actions = {
     removeResourceToCollection: function removeResourceToCollection(_ref12, payload) {
         var commit = _ref12.commit;
 
-        axios.post('/api/collections/remove/' + payload.intCollectionId, payload.collection).then(function (response) {
+        axios.post('/api/collections/remove/' + payload.intCollectionId, payload.objCollection).then(function (response) {
             commit('ADD_REMOVE_RESOURCE_TO_COLLECTION', { objCollection: response.data });
         }).catch(function (error) {
             console.log(error);
         });
     },
-    addToResourceFavortted: function addToResourceFavortted(_ref13, resource) {
+    addToResourceFavorite: function addToResourceFavorite(_ref13, resource) {
         var commit = _ref13.commit;
 
 
@@ -46200,16 +46190,6 @@ var actions = {
             console.log(error);
         });
     },
-
-    // searchResource({commit}, resource) {
-    //     axios.post('/resources/search' , resource)
-    //         .then(response => {
-    //             commit('SEARCH_RESOURCE', response)
-    //             // console.log(response)
-    //         }).catch(error => {
-    //         console.log(error)
-    //     })
-    // },
     searchResourceCollection: function searchResourceCollection(_ref14, search) {
         var commit = _ref14.commit;
 
@@ -46219,7 +46199,7 @@ var actions = {
             console.log(error);
         });
     },
-    addToCollectionFavortted: function addToCollectionFavortted(_ref15, collection) {
+    addToCollectionFavorite: function addToCollectionFavorite(_ref15, collection) {
         var commit = _ref15.commit;
 
 
@@ -46248,8 +46228,9 @@ var actions = {
 
 "use strict";
 var mutations = {
-    CREATE_RESOURCE: function CREATE_RESOURCE(state, resource) {
-        state.resources.unshift(resource);
+    CREATE_RESOURCE: function CREATE_RESOURCE(state, payload) {
+        state.arrObjResources = payload.arrObjResources;
+        state.arrObjCollections = payload.arrObjCollections;
     },
     FETCH_RESOURCES_COLLECTIONS: function FETCH_RESOURCES_COLLECTIONS(state, payload) {
         state.arrObjResources = payload.arrObjResources;
@@ -46275,44 +46256,38 @@ var mutations = {
             }
         });
     },
-    DELETE_RESOURCE: function DELETE_RESOURCE(state, resource) {
-        var index = state.resources.findIndex(function (item) {
-            return item.id === resource.id;
-        });
-        state.resources.splice(index, 1);
+    DELETE_RESOURCE: function DELETE_RESOURCE(state, payload) {
+        state.arrObjResources = payload.arrObjResources;
+        state.arrObjCollections = payload.arrObjCollections;
     },
     ADD_REMOVE_COLLECTION_TO_RESOURCE: function ADD_REMOVE_COLLECTION_TO_RESOURCE(state, payload) {
-        state.resourcesview = payload.objResource;
+        state.objResourcesView = payload.objResource;
     },
     ADD_REMOVE_RESOURCE_TO_COLLECTION: function ADD_REMOVE_RESOURCE_TO_COLLECTION(state, payload) {
-        state.collectionsview = payload.objCollection;
+        state.objCollectionsview = payload.objCollection;
     },
     VIEW_RESOURCE: function VIEW_RESOURCE(state, payload) {
-        state.resourcesview = payload.objResource;
+        state.objResourcesView = payload.objResource;
     },
-    UPDATE_RESOURCE: function UPDATE_RESOURCE(state, resource) {
-        var index = state.resources.findIndex(function (item) {
-            return item.id === resource.id;
-        });
-        state.resources.splice(index, 1);
+    UPDATE_RESOURCE: function UPDATE_RESOURCE(state, payload) {
+        state.arrObjResources = payload.arrObjResources;
+        state.arrObjCollections = payload.arrObjCollections;
     },
-    CREATE_COLLECTION: function CREATE_COLLECTION(state, collection) {
-        state.collections.unshift(collection);
+    CREATE_COLLECTION: function CREATE_COLLECTION(state, payload) {
+        state.arrObjCollections = payload.arrObjCollections;
+        state.arrObjResources = payload.arrObjResources;
+    },
+    UPDATE_COLLECTION: function UPDATE_COLLECTION(state, payload) {
+        state.arrObjCollections = payload.arrObjCollections;
+        state.arrObjResources = payload.arrObjResources;
     },
     VIEW_COLLECTION: function VIEW_COLLECTION(state, payload) {
-        // let index = state.resources.findIndex(item => item.id === resource.id)
-        state.collectionsview = payload.objCollection;
+        state.objCollectionsview = payload.objCollection;
     },
     SEARCH_RESOURCE_COLLECTION: function SEARCH_RESOURCE_COLLECTION(state, payload) {
-        console.log("PAYLOAD");
-        console.log(payload);
         state.arrObjSearchPageData = payload;
-        // state.arrObjSearchCollections  = payload.arrObjCollectionSearch
     },
     SEARCH_COLLECTION: function SEARCH_COLLECTION(state, payload) {
-        console.log('payload');
-        console.log(payload);
-        // let index = state.resources.findIndex(item => item.id === resource.id)
         state.arrObjCollections = payload;
     },
     ELASTIC_SEARCH: function ELASTIC_SEARCH(state, payload) {
@@ -46355,19 +46330,19 @@ var getters = {
 
 "use strict";
 var state = {
-    resources: [],
-    resourcesview: false,
+    objResource: [],
+    objResourcesView: false,
 
-    collections: [],
-    collectionsview: false,
+    objCollections: [],
+    objCollectionsview: false,
 
     intResourceId: {},
     arrObjCollections: [],
     arrObjResources: [],
     isFavorites: {},
     arrObjSearchPageData: [],
-    arrObjElasticSearchResult: []
-    // arrObjSearchCollections:[]
+    arrObjElasticSearchResult: [],
+    arrObjSearchCollections: []
 
 };
 
@@ -46478,8 +46453,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
 
 
 
@@ -46488,21 +46461,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     data: function data() {
         return {
             errors: [],
-            objResource: {
+            objResources: {
                 title: '',
                 description: ''
 
-            },
-            file_upload: []
+            }
         };
     },
 
     methods: {
-        // onImageChange(event){
-        //     let files = event.target.files;
-        //     if (files.length) this.file_upload = files[0];
-        //     console.log(this.file_upload)
-        // },
         createResource: function createResource(objResource) {
 
             if (this.title && this.description) {
@@ -46515,21 +46482,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             if (!this.description) {
                 this.errors.push('description required.');
             }
-            // const config = {
-            //     headers: {'content-type': 'multipart/form-data'}
-            // }
-            // let data = new FormData();
-            // data.append('file_upload', this.file_upload);
-            // data.append('_method', 'put');
-            // console.log(objResource)
-            // console.log("DDDDD")
-            // console.log(this.file_upload)
             this.$store.dispatch('createResource', objResource);
         }
     },
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['resources', 'resourcesdata', 'resourcesview']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['objResource', 'objResourcesView']), {
         isValid: function isValid() {
-            return this.objResource.title !== '' && this.objResource.description !== '';
+            return this.objResources.title !== '' && this.objResources.description !== '';
         }
     }),
     components: {
@@ -46637,14 +46595,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         viewResource: function viewResource() {
             this.$store.commit('VIEW_RESOURCE', { objResource: false });
         },
-        addCollectionToResource: function addCollectionToResource(resource, intResourceId) {
-            this.$store.dispatch('addCollectionToResource', { 'resource': resource, 'intResourceId': intResourceId });
+        addCollectionToResource: function addCollectionToResource(objResource, intResourceId) {
+            this.$store.dispatch('addCollectionToResource', { 'objResource': objResource, 'intResourceId': intResourceId });
         },
-        removeCollectionToResource: function removeCollectionToResource(resource, intResourceId) {
-            this.$store.dispatch('removeCollectionToResource', { 'resource': resource, 'intResourceId': intResourceId });
+        removeCollectionToResource: function removeCollectionToResource(objResource, intResourceId) {
+            this.$store.dispatch('removeCollectionToResource', { 'objResource': objResource, 'intResourceId': intResourceId });
         }
     },
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['resourcesview', 'intResourceId', 'arrObjResources', 'arrObjCollections']))
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['objResourcesView', 'intResourceId', 'arrObjResources', 'arrObjCollections']))
 });
 
 /***/ }),
@@ -46682,20 +46640,20 @@ var render = function() {
               _vm._v(" "),
               _c("center", [
                 _c("h4", [
-                  _vm._v("ID          : " + _vm._s(_vm.resourcesview.id))
+                  _vm._v("ID          : " + _vm._s(_vm.objResourcesView.id))
                 ]),
                 _vm._v(" "),
                 _c("h4", [
-                  _vm._v("TITLE       : " + _vm._s(_vm.resourcesview.title))
+                  _vm._v("TITLE       : " + _vm._s(_vm.objResourcesView.title))
                 ]),
                 _vm._v(" "),
                 _c("h5", [
-                  _vm._v("SLUG        : " + _vm._s(_vm.resourcesview.slug))
+                  _vm._v("SLUG        : " + _vm._s(_vm.objResourcesView.slug))
                 ]),
                 _vm._v(" "),
                 _c("h5", [
                   _vm._v(
-                    "DESCRIPTION : " + _vm._s(_vm.resourcesview.description)
+                    "DESCRIPTION : " + _vm._s(_vm.objResourcesView.description)
                   )
                 ])
               ])
@@ -46725,7 +46683,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.resourcesview.collections, function(objCollection) {
+          _vm._l(_vm.objResourcesView.collections, function(objCollection) {
             return _c("tr", [
               _c("td", [_vm._v(_vm._s(objCollection.id))]),
               _vm._v(" "),
@@ -46742,7 +46700,7 @@ var render = function() {
                       click: function($event) {
                         return _vm.removeCollectionToResource(
                           objCollection,
-                          _vm.resourcesview.id
+                          _vm.objResourcesView.id
                         )
                       }
                     }
@@ -46800,7 +46758,7 @@ var render = function() {
                                 click: function($event) {
                                   return _vm.addCollectionToResource(
                                     objCollection,
-                                    _vm.resourcesview.id
+                                    _vm.objResourcesView.id
                                   )
                                 }
                               }
@@ -46915,7 +46873,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    !_vm.resourcesview
+    !_vm.objResourcesView
       ? _c("div", [
           _c(
             "button",
@@ -46929,20 +46887,6 @@ var render = function() {
             },
             [_vm._v("Add New Resource")]
           ),
-          _vm._v(" "),
-          _vm.errors.length
-            ? _c("h5", [
-                _c("b", [_vm._v("Please correct the following error(s):")]),
-                _vm._v(" "),
-                _c(
-                  "ul",
-                  _vm._l(_vm.errors, function(error) {
-                    return _c("li", [_vm._v(_vm._s(error))])
-                  }),
-                  0
-                )
-              ])
-            : _vm._e(),
           _vm._v(" "),
           _c(
             "div",
@@ -46964,13 +46908,29 @@ var render = function() {
                     _vm._m(0),
                     _vm._v(" "),
                     _c("div", { staticClass: "modal-body" }, [
+                      _vm.errors.length
+                        ? _c("h5", [
+                            _c("b", [
+                              _vm._v("Please correct the following error(s):")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "ul",
+                              _vm._l(_vm.errors, function(error) {
+                                return _c("li", [_vm._v(_vm._s(error))])
+                              }),
+                              0
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
                       _c(
                         "form",
                         {
                           attrs: { enctype: "multipart/form-data" },
                           on: {
                             submit: function($event) {
-                              return _vm.createResource(_vm.objResource)
+                              return _vm.createResource(_vm.objResources)
                             }
                           }
                         },
@@ -46988,20 +46948,20 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.objResource.title,
-                                    expression: "objResource.title"
+                                    value: _vm.objResources.title,
+                                    expression: "objResources.title"
                                   }
                                 ],
                                 staticClass: "form-control input-lg",
                                 attrs: { type: "text", id: "title" },
-                                domProps: { value: _vm.objResource.title },
+                                domProps: { value: _vm.objResources.title },
                                 on: {
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
                                     }
                                     _vm.$set(
-                                      _vm.objResource,
+                                      _vm.objResources,
                                       "title",
                                       $event.target.value
                                     )
@@ -47024,14 +46984,14 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.objResource.description,
-                                    expression: "objResource.description"
+                                    value: _vm.objResources.description,
+                                    expression: "objResources.description"
                                   }
                                 ],
                                 staticClass: "form-control input-lg",
                                 attrs: { type: "text", id: "description" },
                                 domProps: {
-                                  value: _vm.objResource.description
+                                  value: _vm.objResources.description
                                 },
                                 on: {
                                   input: function($event) {
@@ -47039,7 +46999,7 @@ var render = function() {
                                       return
                                     }
                                     _vm.$set(
-                                      _vm.objResource,
+                                      _vm.objResources,
                                       "description",
                                       $event.target.value
                                     )
@@ -47058,11 +47018,14 @@ var render = function() {
                               "button",
                               {
                                 staticClass: "btn btn-block btn-primary",
-                                attrs: { "data-dismiss": "modal" },
+                                attrs: {
+                                  disabled: !_vm.isValid,
+                                  "data-dismiss": "modal"
+                                },
                                 on: {
                                   click: function($event) {
                                     $event.preventDefault()
-                                    return _vm.createResource(_vm.objResource)
+                                    return _vm.createResource(_vm.objResources)
                                   }
                                 }
                               },
@@ -47400,7 +47363,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            resource: {
+            objResource: {
                 id: '',
                 title: '',
                 description: ''
@@ -47424,23 +47387,23 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             window.location.href = "http://127.0.0.1:8000/resources/search/search";
         },
         updateResource: function updateResource(objResource) {
-            this.resource.id = objResource.id;
-            this.resource.title = objResource.title;
-            this.resource.description = objResource.description;
+            this.objResource.id = objResource.id;
+            this.objResource.title = objResource.title;
+            this.objResource.description = objResource.description;
         },
         updateResourceDetails: function updateResourceDetails() {
-            this.$store.dispatch('updateResource', { id: this.resource.id, title: this.resource.title, description: this.resource.description });
+            this.$store.dispatch('updateResource', { id: this.objResource.id, title: this.objResource.title, description: this.objResource.description });
         },
-        addToResourceFavortted: function addToResourceFavortted(objResource) {
-            this.$store.dispatch('addToResourceFavortted', objResource);
+        addToResourceFavorite: function addToResourceFavorite(objResource) {
+            this.$store.dispatch('addToResourceFavorite', objResource);
         },
         elasticSearch: function elasticSearch() {
             window.location.href = "http://127.0.0.1:8000/searchPage";
         }
     },
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['resourcesview', 'arrObjResources', 'isFavorites']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['objResourcesView', 'arrObjResources', 'isFavorites']), {
         isValid: function isValid() {
-            return this.resource.title !== '' && this.resource.description !== '';
+            return this.objResource.title !== '' && this.objResource.description !== '';
         }
     }),
     components: {
@@ -47457,7 +47420,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    !_vm.resourcesview
+    !_vm.objResourcesView
       ? _c("div", [
           _c("h4", { staticClass: "text-center font-weight-bold" }, [
             _vm._v("Resources")
@@ -47590,7 +47553,7 @@ var render = function() {
                               staticClass: "btn btn-success",
                               on: {
                                 click: function($event) {
-                                  return _vm.addToResourceFavortted(
+                                  return _vm.addToResourceFavorite(
                                     objResource,
                                     false
                                   )
@@ -47607,7 +47570,7 @@ var render = function() {
                               staticClass: "btn btn-success",
                               on: {
                                 click: function($event) {
-                                  return _vm.addToResourceFavortted(
+                                  return _vm.addToResourceFavorite(
                                     objResource,
                                     true
                                   )
@@ -47626,7 +47589,7 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c("div", [_vm.resourcesview ? _c("resourcesView") : _vm._e()], 1),
+    _c("div", [_vm.objResourcesView ? _c("resourcesView") : _vm._e()], 1),
     _vm._v(" "),
     _c(
       "div",
@@ -47660,19 +47623,23 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.resource.title,
-                            expression: "resource.title"
+                            value: _vm.objResource.title,
+                            expression: "objResource.title"
                           }
                         ],
                         staticClass: "form-control input-lg",
                         attrs: { type: "text", id: "title" },
-                        domProps: { value: _vm.resource.title },
+                        domProps: { value: _vm.objResource.title },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.resource, "title", $event.target.value)
+                            _vm.$set(
+                              _vm.objResource,
+                              "title",
+                              $event.target.value
+                            )
                           }
                         }
                       })
@@ -47684,18 +47651,18 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.resource.id,
-                        expression: "resource.id"
+                        value: _vm.objResource.id,
+                        expression: "objResource.id"
                       }
                     ],
                     attrs: { type: "hidden" },
-                    domProps: { value: _vm.resource.id },
+                    domProps: { value: _vm.objResource.id },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.resource, "id", $event.target.value)
+                        _vm.$set(_vm.objResource, "id", $event.target.value)
                       }
                     }
                   }),
@@ -47711,20 +47678,20 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.resource.description,
-                            expression: "resource.description"
+                            value: _vm.objResource.description,
+                            expression: "objResource.description"
                           }
                         ],
                         staticClass: "form-control input-lg",
                         attrs: { type: "text", id: "description" },
-                        domProps: { value: _vm.resource.description },
+                        domProps: { value: _vm.objResource.description },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.resource,
+                              _vm.objResource,
                               "description",
                               $event.target.value
                             )
@@ -47951,7 +47918,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     name: "CreateCollection",
     data: function data() {
         return {
-            collection: {
+            objCollection: {
                 title: '',
                 description: ''
             }
@@ -47959,13 +47926,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
 
     methods: {
-        createCollection: function createCollection(collection) {
-            this.$store.dispatch('createCollection', collection);
+        createCollection: function createCollection(objCollection) {
+            this.$store.dispatch('createCollection', objCollection);
         }
     },
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['collections', 'collectionsdata', 'collectionsview']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['objCollections', 'objCollectionsview']), {
         isValid: function isValid() {
-            return this.collection.title !== '' && this.collection.description !== '';
+            return this.objCollection.title !== '' && this.objCollection.description !== '';
         }
     }),
     components: {
@@ -48073,14 +48040,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         viewCollection: function viewCollection() {
             this.$store.commit('VIEW_COLLECTION', { objCollection: false });
         },
-        addResourceToCollection: function addResourceToCollection(collection, intCollectionId) {
-            this.$store.dispatch('addResourceToCollection', { 'collection': collection, 'intCollectionId': intCollectionId });
+        addResourceToCollection: function addResourceToCollection(objCollection, intCollectionId) {
+            console.log(objCollection);
+            this.$store.dispatch('addResourceToCollection', { 'objCollection': objCollection, 'intCollectionId': intCollectionId });
         },
-        removeResourceToCollection: function removeResourceToCollection(collection, intCollectionId) {
-            this.$store.dispatch('removeResourceToCollection', { 'collection': collection, 'intCollectionId': intCollectionId });
+        removeResourceToCollection: function removeResourceToCollection(objCollection, intCollectionId) {
+            this.$store.dispatch('removeResourceToCollection', { 'objCollection': objCollection, 'intCollectionId': intCollectionId });
         }
     },
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['collections', 'collectionsview', 'arrObjResources', 'arrObjCollections']))
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['objCollections', 'objCollectionsview', 'arrObjResources', 'arrObjCollections']))
 });
 
 /***/ }),
@@ -48098,7 +48066,7 @@ var render = function() {
         staticClass: "btn btn-info",
         on: {
           click: function($event) {
-            return _vm.viewCollection(_vm.collection)
+            return _vm.viewCollection(_vm.objCollection)
           }
         }
       },
@@ -48118,20 +48086,20 @@ var render = function() {
               _vm._v(" "),
               _c("center", [
                 _c("h4", [
-                  _vm._v("ID          :" + _vm._s(_vm.collectionsview.id))
+                  _vm._v("ID          :" + _vm._s(_vm.objCollectionsview.id))
                 ]),
                 _vm._v(" "),
                 _c("h4", [
-                  _vm._v("TITLE       :" + _vm._s(_vm.collectionsview.title))
+                  _vm._v("TITLE       :" + _vm._s(_vm.objCollectionsview.title))
                 ]),
                 _vm._v(" "),
                 _c("h5", [
-                  _vm._v("SLUG        :" + _vm._s(_vm.collectionsview.slug))
+                  _vm._v("SLUG        :" + _vm._s(_vm.objCollectionsview.slug))
                 ]),
                 _vm._v(" "),
                 _c("h5", [
                   _vm._v(
-                    "DESCRIPTION :" + _vm._s(_vm.collectionsview.description)
+                    "DESCRIPTION :" + _vm._s(_vm.objCollectionsview.description)
                   )
                 ])
               ])
@@ -48161,7 +48129,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.collectionsview.resources, function(objCollection) {
+          _vm._l(_vm.objCollectionsview.resources, function(objCollection) {
             return _c("tr", [
               _c("td", [_vm._v(_vm._s(objCollection.id))]),
               _vm._v(" "),
@@ -48178,7 +48146,7 @@ var render = function() {
                       click: function($event) {
                         return _vm.removeResourceToCollection(
                           objCollection,
-                          _vm.collectionsview.id
+                          _vm.objCollectionsview.id
                         )
                       }
                     }
@@ -48218,13 +48186,13 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.arrObjResources, function(ObjResource) {
+                    _vm._l(_vm.arrObjResources, function(objResource) {
                       return _c("tr", [
-                        _c("td", [_vm._v(_vm._s(ObjResource.title))]),
+                        _c("td", [_vm._v(_vm._s(objResource.title))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(ObjResource.slug))]),
+                        _c("td", [_vm._v(_vm._s(objResource.slug))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(ObjResource.description))]),
+                        _c("td", [_vm._v(_vm._s(objResource.description))]),
                         _vm._v(" "),
                         _c("td", [
                           _c(
@@ -48235,8 +48203,8 @@ var render = function() {
                               on: {
                                 click: function($event) {
                                   return _vm.addResourceToCollection(
-                                    ObjResource,
-                                    _vm.collectionsview.id
+                                    objResource,
+                                    _vm.objCollectionsview.id
                                   )
                                 }
                               }
@@ -48351,7 +48319,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    !_vm.collectionsview
+    !_vm.objCollectionsview
       ? _c("div", [
           _c(
             "button",
@@ -48394,7 +48362,7 @@ var render = function() {
                           {
                             on: {
                               submit: function($event) {
-                                return _vm.createCollection(_vm.collection)
+                                return _vm.createCollection(_vm.objCollection)
                               }
                             }
                           },
@@ -48414,8 +48382,8 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.collection.title,
-                                      expression: "collection.title"
+                                      value: _vm.objCollection.title,
+                                      expression: "objCollection.title"
                                     }
                                   ],
                                   staticClass: "form-control input-lg",
@@ -48424,14 +48392,14 @@ var render = function() {
                                     name: "title",
                                     id: "title"
                                   },
-                                  domProps: { value: _vm.collection.title },
+                                  domProps: { value: _vm.objCollection.title },
                                   on: {
                                     input: function($event) {
                                       if ($event.target.composing) {
                                         return
                                       }
                                       _vm.$set(
-                                        _vm.collection,
+                                        _vm.objCollection,
                                         "title",
                                         $event.target.value
                                       )
@@ -48458,8 +48426,8 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.collection.description,
-                                      expression: "collection.description"
+                                      value: _vm.objCollection.description,
+                                      expression: "objCollection.description"
                                     }
                                   ],
                                   staticClass: "form-control input-lg",
@@ -48469,7 +48437,7 @@ var render = function() {
                                     id: "description"
                                   },
                                   domProps: {
-                                    value: _vm.collection.description
+                                    value: _vm.objCollection.description
                                   },
                                   on: {
                                     input: function($event) {
@@ -48477,7 +48445,7 @@ var render = function() {
                                         return
                                       }
                                       _vm.$set(
-                                        _vm.collection,
+                                        _vm.objCollection,
                                         "description",
                                         $event.target.value
                                       )
@@ -48504,7 +48472,7 @@ var render = function() {
                                     click: function($event) {
                                       $event.preventDefault()
                                       return _vm.createCollection(
-                                        _vm.collection
+                                        _vm.objCollection
                                       )
                                     }
                                   }
@@ -48723,7 +48691,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            collection: {
+            objCollection: {
                 id: '',
                 title: '',
                 description: ''
@@ -48737,33 +48705,32 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
 
     methods: {
-        deleteCollection: function deleteCollection(collection) {
-            this.$store.dispatch('deleteCollection', collection);
+        deleteCollection: function deleteCollection(objCollection) {
+            this.$store.dispatch('deleteCollection', objCollection);
         },
         viewCollection: function viewCollection(objCollection) {
             this.boolCollectionView = true;
             this.$store.commit('VIEW_COLLECTION', { objCollection: objCollection });
         },
-        updateCollection: function updateCollection(collection) {
-            this.collection.id = collection.id;
-            this.collection.title = collection.title;
-            this.collection.description = collection.description;
+        updateCollection: function updateCollection(objCollection) {
+            this.objCollection.id = objCollection.id;
+            this.objCollection.title = objCollection.title;
+            this.objCollection.description = objCollection.description;
         },
         updateCollectionDetails: function updateCollectionDetails() {
 
-            this.$store.dispatch('updateCollection', { id: this.collection.id, title: this.collection.title, description: this.collection.description });
+            this.$store.dispatch('updateCollection', { id: this.objCollection.id, title: this.objCollection.title, description: this.objCollection.description });
         },
-        addToCollectionFavortted: function addToCollectionFavortted(collection) {
-
-            this.$store.dispatch('addToCollectionFavortted', collection);
+        addToCollectionFavorite: function addToCollectionFavorite(arrObjCollection) {
+            this.$store.dispatch('addToCollectionFavorite', arrObjCollection);
         },
         searchResourceCollection: function searchResourceCollection() {
             window.location.href = "http://127.0.0.1:8000/collections/search/search";
         }
     },
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['collections', 'collectionsview', 'arrObjResources', 'arrObjCollections']), {
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['objCollections', 'objCollectionsview', 'arrObjResources', 'arrObjCollections']), {
         isValid: function isValid() {
-            return this.collection.title !== '' && this.collection.description !== '';
+            return this.objCollection.title !== '' && this.objCollection.description !== '';
         }
     }),
     components: {
@@ -48781,7 +48748,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    !_vm.collectionsview
+    !_vm.objCollectionsview
       ? _c("div", [
           _c("h4", { staticClass: "text-center font-weight-bold" }, [
             _vm._v("Collection")
@@ -48811,11 +48778,11 @@ var render = function() {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.arrObjCollections.data, function(collection) {
+              _vm._l(_vm.arrObjCollections.data, function(objCollection) {
                 return _c("tr", [
-                  _c("td", [_vm._v(_vm._s(collection.title))]),
+                  _c("td", [_vm._v(_vm._s(objCollection.title))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(collection.description))]),
+                  _c("td", [_vm._v(_vm._s(objCollection.description))]),
                   _vm._v(" "),
                   _c("td", [
                     _c(
@@ -48829,7 +48796,7 @@ var render = function() {
                         },
                         on: {
                           click: function($event) {
-                            return _vm.updateCollection(collection)
+                            return _vm.updateCollection(objCollection)
                           }
                         }
                       },
@@ -48846,7 +48813,7 @@ var render = function() {
                         staticClass: "btn btn-danger",
                         on: {
                           click: function($event) {
-                            return _vm.deleteCollection(collection)
+                            return _vm.deleteCollection(objCollection)
                           }
                         }
                       },
@@ -48859,7 +48826,7 @@ var render = function() {
                         staticClass: "btn btn-info",
                         on: {
                           click: function($event) {
-                            return _vm.viewCollection(collection)
+                            return _vm.viewCollection(objCollection)
                           }
                         }
                       },
@@ -48877,7 +48844,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", [
-                    collection.is_favortted
+                    objCollection.is_favortted
                       ? _c("p", [
                           _c(
                             "button",
@@ -48885,8 +48852,8 @@ var render = function() {
                               staticClass: "btn btn-success",
                               on: {
                                 click: function($event) {
-                                  return _vm.addToCollectionFavortted(
-                                    collection,
+                                  return _vm.addToCollectionFavorite(
+                                    objCollection,
                                     false
                                   )
                                 }
@@ -48902,8 +48869,8 @@ var render = function() {
                               staticClass: "btn btn-success",
                               on: {
                                 click: function($event) {
-                                  return _vm.addToCollectionFavortted(
-                                    collection,
+                                  return _vm.addToCollectionFavorite(
+                                    objCollection,
                                     true
                                   )
                                 }
@@ -48921,7 +48888,7 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c("div", [_vm.collectionsview ? _c("collectionsView") : _vm._e()], 1),
+    _c("div", [_vm.objCollectionsview ? _c("collectionsView") : _vm._e()], 1),
     _vm._v(" "),
     _c(
       "div",
@@ -48955,20 +48922,20 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.collection.title,
-                            expression: "collection.title"
+                            value: _vm.objCollection.title,
+                            expression: "objCollection.title"
                           }
                         ],
                         staticClass: "form-control input-lg",
                         attrs: { type: "text", id: "title" },
-                        domProps: { value: _vm.collection.title },
+                        domProps: { value: _vm.objCollection.title },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.collection,
+                              _vm.objCollection,
                               "title",
                               $event.target.value
                             )
@@ -48983,18 +48950,18 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.collection.id,
-                        expression: "collection.id"
+                        value: _vm.objCollection.id,
+                        expression: "objCollection.id"
                       }
                     ],
                     attrs: { type: "hidden" },
-                    domProps: { value: _vm.collection.id },
+                    domProps: { value: _vm.objCollection.id },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.collection, "id", $event.target.value)
+                        _vm.$set(_vm.objCollection, "id", $event.target.value)
                       }
                     }
                   }),
@@ -49010,20 +48977,20 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.collection.description,
-                            expression: "collection.description"
+                            value: _vm.objCollection.description,
+                            expression: "objCollection.description"
                           }
                         ],
                         staticClass: "form-control input-lg",
                         attrs: { type: "text", id: "description" },
-                        domProps: { value: _vm.collection.description },
+                        domProps: { value: _vm.objCollection.description },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.collection,
+                              _vm.objCollection,
                               "description",
                               $event.target.value
                             )
@@ -49569,7 +49536,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.$store.dispatch('searchCollection', collection);
         }
     },
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['collections', 'collectionsdata', 'collectionsview']))
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])(['objCollections', 'objCollectionsview']))
 
 });
 

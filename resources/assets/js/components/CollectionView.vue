@@ -1,16 +1,16 @@
 <template>
     <div>
-        <button class="btn btn-info" @click="viewCollection(collection)">Back</button>
+        <button class="btn btn-info" @click="viewCollection(objCollection)">Back</button>
         <div class="container" >
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="panel panel-default">
                         <div class="panel-heading">Example Component</div>
                         <center>
-                            <h4>ID          :{{collectionsview.id}}</h4>
-                            <h4>TITLE       :{{collectionsview.title}}</h4>
-                            <h5>SLUG        :{{collectionsview.slug}}</h5>
-                            <h5>DESCRIPTION :{{collectionsview.description}}</h5>
+                            <h4>ID          :{{objCollectionsview.id}}</h4>
+                            <h4>TITLE       :{{objCollectionsview.title}}</h4>
+                            <h5>SLUG        :{{objCollectionsview.slug}}</h5>
+                            <h5>DESCRIPTION :{{objCollectionsview.description}}</h5>
                         </center>
                     </div>
                 </div>
@@ -28,12 +28,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="objCollection in collectionsview.resources">
+                <tr v-for="objCollection in objCollectionsview.resources">
                     <td>{{objCollection.id}}</td>
                     <td>{{objCollection.slug}}</td>
                     <td>{{objCollection.description}}</td>
                     <td>
-                        <button class="btn btn-danger" @click="removeResourceToCollection(objCollection,collectionsview.id)">Remove to Resource</button>
+                        <button class="btn btn-danger" @click="removeResourceToCollection(objCollection,objCollectionsview.id)">Remove to Resource</button>
                     </td>
                 </tr>
                 </tbody>
@@ -59,12 +59,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="ObjResource in arrObjResources">
-                                <td>{{ObjResource.title}}</td>
-                                <td>{{ObjResource.slug}}</td>
-                                <td>{{ObjResource.description}}</td>
+                            <tr v-for="objResource in arrObjResources">
+                                <td>{{objResource.title}}</td>
+                                <td>{{objResource.slug}}</td>
+                                <td>{{objResource.description}}</td>
                                 <td>
-                                    <button data-dismiss="modal" class="btn btn-success" @click="addResourceToCollection(ObjResource,collectionsview.id)">Add Resource</button>
+                                    <button data-dismiss="modal" class="btn btn-success" @click="addResourceToCollection(objResource,objCollectionsview.id)">Add Resource</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -88,17 +88,18 @@
             viewCollection() {
                 this.$store.commit('VIEW_COLLECTION', {objCollection: false})
             },
-            addResourceToCollection(collection,intCollectionId) {
-                this.$store.dispatch('addResourceToCollection',{'collection': collection, 'intCollectionId': intCollectionId})
+            addResourceToCollection(objCollection,intCollectionId) {
+                console.log(objCollection)
+                this.$store.dispatch('addResourceToCollection',{'objCollection': objCollection, 'intCollectionId': intCollectionId})
             },
-            removeResourceToCollection(collection,intCollectionId) {
-                this.$store.dispatch('removeResourceToCollection',{'collection': collection, 'intCollectionId': intCollectionId})
+            removeResourceToCollection(objCollection,intCollectionId) {
+                this.$store.dispatch('removeResourceToCollection',{'objCollection': objCollection, 'intCollectionId': intCollectionId})
             }
         },
         computed: {
             ...mapState([
-                'collections',
-                'collectionsview',
+                'objCollections',
+                'objCollectionsview',
                 'arrObjResources',
                 'arrObjCollections'
             ])

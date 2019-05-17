@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!resourcesview">
+        <div v-if="!objResourcesView">
             <h4 class="text-center font-weight-bold">Resources</h4>
             <button class="btn btn-info" @click="searchResourceCollection()"><i style="color:white" class="fa fa-trash">Vue  search</i></button>
              <br><br>
@@ -31,10 +31,10 @@
                     </td>
                     <td>
                         <p v-if="objResource.is_favortted">
-                            <button class="btn btn-success" @click="addToResourceFavortted(objResource, false)">UnFavorites</button>
+                            <button class="btn btn-success" @click="addToResourceFavorite(objResource, false)">UnFavorites</button>
                         </p>
                         <p v-else>
-                           <button class="btn btn-success" @click="addToResourceFavortted(objResource, true)"> Favorites</button>
+                           <button class="btn btn-success" @click="addToResourceFavorite(objResource, true)"> Favorites</button>
                         </p>
                     </td>
                 </tr>
@@ -42,7 +42,7 @@
             </table>
         </div>
         <div>
-            <resourcesView v-if="resourcesview"></resourcesView>
+            <resourcesView v-if="objResourcesView"></resourcesView>
         </div>
 
         <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="favoritesModalLabel">
@@ -57,14 +57,14 @@
                             <div class="form-group">
                                 <label class="col-md-4 text-right">Enter Title of File</label>
                                 <div class="col-md-8">
-                                    <input type="text" id="title" v-model="resource.title" class="form-control input-lg" />
+                                    <input type="text" id="title" v-model="objResource.title" class="form-control input-lg" />
                                 </div>
                             </div>
-                            <input type="hidden" v-model="resource.id" />
+                            <input type="hidden" v-model="objResource.id" />
                             <div class="form-group">
                                 <label class="col-md-4 text-right">Enter Description</label>
                                 <div class="col-md-8">
-                                    <input type="text" id="description" v-model="resource.description" class="form-control input-lg" />
+                                    <input type="text" id="description" v-model="objResource.description" class="form-control input-lg" />
                                 </div>
                             </div>
                             <br /><br /><br />
@@ -87,7 +87,7 @@
     export default {
         data(){
             return {
-                resource: {
+                objResource: {
                     id:'',
                     title: '',
                     description: ''
@@ -111,15 +111,15 @@
 
             },
             updateResource(objResource) {
-                this.resource.id          = objResource.id;
-                this.resource.title       = objResource.title;
-                this.resource.description = objResource.description;
+                this.objResource.id          = objResource.id;
+                this.objResource.title       = objResource.title;
+                this.objResource.description = objResource.description;
             },
             updateResourceDetails() {
-                this.$store.dispatch('updateResource',{id:this.resource.id,title:this.resource.title,description:this.resource.description})
+                this.$store.dispatch('updateResource',{id:this.objResource.id,title:this.objResource.title,description:this.objResource.description})
             },
-            addToResourceFavortted(objResource) {
-                this.$store.dispatch('addToResourceFavortted',objResource)
+            addToResourceFavorite(objResource) {
+                this.$store.dispatch('addToResourceFavorite',objResource)
             },
             elasticSearch(){
                 window.location.href="http://127.0.0.1:8000/searchPage"
@@ -127,12 +127,12 @@
         },
         computed: {
             ...mapState([
-                'resourcesview',
+                'objResourcesView',
                 'arrObjResources',
                 'isFavorites'
             ]),
             isValid() {
-                return this.resource.title !== '' && this.resource.description !== ''
+                return this.objResource.title !== '' && this.objResource.description !== ''
             }
         },
         components: {

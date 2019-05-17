@@ -16,19 +16,14 @@ window.Vue = require('vue');
  */
 import store from './store/index'
 
-Vue.component('resources', require('./components/ResourceCreate.vue'));
 Vue.component('example-component', require('./components/ExampleComponent'));
+Vue.component('resources', require('./components/ResourceCreate.vue'));
 Vue.component('resources-index', require('./components/ResourcesIndex'));
+Vue.component('resources-search', require('./components/ResourcesSearch'));
+Vue.component('collection-search', require('./components/CollectionSearch'));
 Vue.component('collection', require('./components/CollectionCreate'));
 Vue.component('collection-index', require('./components/CollectionIndex'));
 Vue.component('collection-view', require('./components/CollectionView'));
-
-Vue.component('resources-search', require('./components/ResourcesSearch'));
-
-
-Vue.component('collection-search', require('./components/CollectionSearch'));
-
-
 Vue.component('collection-resources-search', require('./components/SearchResourceCollection'));
 Vue.component('collection-resources-search-data', require('./components/SearchDataResourceCollection'));
 

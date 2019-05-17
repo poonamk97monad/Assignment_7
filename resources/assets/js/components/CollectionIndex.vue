@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!collectionsview">
+        <div v-if="!objCollectionsview">
             <h4 class="text-center font-weight-bold">Collection</h4>
             <button class="btn btn-info" @click="searchResourceCollection()"><i style="color:white" class="fa fa-trash">search</i></button>
             <table class="table table-striped">
@@ -13,21 +13,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="collection in arrObjCollections.data">
-                    <td>{{collection.title}}</td>
-                    <td>{{collection.description}}</td>
+                <tr v-for="objCollection in arrObjCollections.data">
+                    <td>{{objCollection.title}}</td>
+                    <td>{{objCollection.description}}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditModal" @click="updateCollection(collection)">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#EditModal" @click="updateCollection(objCollection)">
                             <span class="glyphicon glyphicon-pencil"></span></button>
-                        <button class="btn btn-danger" @click="deleteCollection(collection)"><span class="glyphicon glyphicon-trash"></span></button>
-                        <button class="btn btn-info" @click="viewCollection(collection)"><i style="color:white" class="fa fa-trash">View</i></button>
+                        <button class="btn btn-danger" @click="deleteCollection(objCollection)"><span class="glyphicon glyphicon-trash"></span></button>
+                        <button class="btn btn-info" @click="viewCollection(objCollection)"><i style="color:white" class="fa fa-trash">View</i></button>
                     </td>
                     <td>
-                        <p v-if="collection.is_favortted">
-                            <button class="btn btn-success" @click="addToCollectionFavortted(collection, false)">UnFavorites</button>
+                        <p v-if="objCollection.is_favortted">
+                            <button class="btn btn-success" @click="addToCollectionFavorite(objCollection, false)">UnFavorites</button>
                         </p>
                         <p v-else>
-                            <button class="btn btn-success" @click="addToCollectionFavortted(collection, true)"> Favorites</button>
+                            <button class="btn btn-success" @click="addToCollectionFavorite(objCollection, true)"> Favorites</button>
                         </p>
                     </td>
                 </tr>
@@ -36,7 +36,7 @@
             </table>
          </div>
         <div>
-            <collectionsView v-if="collectionsview"  ></collectionsView>
+            <collectionsView v-if="objCollectionsview"  ></collectionsView>
         </div>
         <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="favoritesModalLabel">
             <div class="modal-dialog" role="document">
@@ -50,14 +50,14 @@
                             <div class="form-group">
                                 <label class="col-md-4 text-right">Enter Title of File</label>
                                 <div class="col-md-8">
-                                    <input type="text" id="title" v-model="collection.title" class="form-control input-lg" />
+                                    <input type="text" id="title" v-model="objCollection.title" class="form-control input-lg" />
                                 </div>
                             </div>
-                            <input type="hidden" v-model="collection.id" />
+                            <input type="hidden" v-model="objCollection.id" />
                             <div class="form-group">
                                 <label class="col-md-4 text-right">Enter Description</label>
                                 <div class="col-md-8">
-                                    <input type="text" id="description" v-model="collection.description" class="form-control input-lg" />
+                                    <input type="text" id="description" v-model="objCollection.description" class="form-control input-lg" />
                                 </div>
                             </div>
                             <br /><br /><br />
@@ -82,7 +82,7 @@
 
         data(){
             return {
-                collection: {
+                objCollection: {
                     id:'',
                     title: '',
                     description: ''
@@ -97,25 +97,24 @@
 
         },
         methods: {
-            deleteCollection(collection) {
-                this.$store.dispatch('deleteCollection',collection)
+            deleteCollection(objCollection) {
+                this.$store.dispatch('deleteCollection',objCollection)
             },
             viewCollection(objCollection) {
                 this.boolCollectionView = true;
                 this.$store.commit('VIEW_COLLECTION', {objCollection: objCollection})
             },
-            updateCollection(collection) {
-                this.collection.id           = collection.id;
-                this.collection.title        = collection.title;
-                this.collection.description  = collection.description;
+            updateCollection(objCollection) {
+                this.objCollection.id           = objCollection.id;
+                this.objCollection.title        = objCollection.title;
+                this.objCollection.description  = objCollection.description;
             },
             updateCollectionDetails() {
 
-                this.$store.dispatch('updateCollection',{id:this.collection.id,title:this.collection.title,description:this.collection.description})
+                this.$store.dispatch('updateCollection',{id:this.objCollection.id,title:this.objCollection.title,description:this.objCollection.description})
             },
-            addToCollectionFavortted(collection) {
-
-                this.$store.dispatch('addToCollectionFavortted',collection)
+            addToCollectionFavorite(arrObjCollection) {
+                this.$store.dispatch('addToCollectionFavorite',arrObjCollection)
             },
             searchResourceCollection() {
                 window.location.href="http://127.0.0.1:8000/collections/search/search"
@@ -124,14 +123,13 @@
         },
         computed: {
             ...mapState([
-               'collections',
-                'collectionsview',
+                'objCollections',
+                'objCollectionsview',
                 'arrObjResources',
                 'arrObjCollections'
-
             ]),
             isValid() {
-                return this.collection.title !== '' && this.collection.description !== ''
+                return this.objCollection.title !== '' && this.objCollection.description !== ''
 
             }
         },

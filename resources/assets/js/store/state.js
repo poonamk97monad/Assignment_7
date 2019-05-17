@@ -1,17 +1,17 @@
 let state = {
-    resources: [],
-    resourcesview: false,
+    objResource: [],
+    objResourcesView: false,
 
-    collections:[],
-    collectionsview: false,
+    objCollections:[],
+    objCollectionsview: false,
 
     intResourceId: {},
     arrObjCollections:[],
     arrObjResources:[],
     isFavorites:{},
     arrObjSearchPageData:[],
-    arrObjElasticSearchResult:[]
-    // arrObjSearchCollections:[]
+    arrObjElasticSearchResult:[],
+    arrObjSearchCollections:[]
 
 }
 

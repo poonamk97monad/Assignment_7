@@ -7,10 +7,10 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Example Component</div>
                         <center>
-                        <h4>ID          : {{resourcesview.id}}</h4>
-                        <h4>TITLE       : {{resourcesview.title}}</h4>
-                        <h5>SLUG        : {{resourcesview.slug}}</h5>
-                        <h5>DESCRIPTION : {{resourcesview.description}}</h5>
+                        <h4>ID          : {{objResourcesView.id}}</h4>
+                        <h4>TITLE       : {{objResourcesView.title}}</h4>
+                        <h5>SLUG        : {{objResourcesView.slug}}</h5>
+                        <h5>DESCRIPTION : {{objResourcesView.description}}</h5>
                         </center>
                     </div>
                 </div>
@@ -28,12 +28,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="objCollection in resourcesview.collections">
+                <tr v-for="objCollection in objResourcesView.collections">
                     <td>{{objCollection.id}}</td>
                     <td>{{objCollection.slug}}</td>
                     <td>{{objCollection.description}}</td>
                     <td>
-                        <button class="btn btn-danger" @click="removeCollectionToResource(objCollection,resourcesview.id)">Remove to Resource</button>
+                        <button class="btn btn-danger" @click="removeCollectionToResource(objCollection,objResourcesView.id)">Remove to Resource</button>
                     </td>
                 </tr>
                 </tbody>
@@ -63,7 +63,7 @@
                                 <td>{{objCollection.slug}}</td>
                                 <td>{{objCollection.description}}</td>
                                 <td>
-                                    <button class="btn btn-success" data-dismiss="modal" @click="addCollectionToResource(objCollection,resourcesview.id)">Add to Resource</button>
+                                    <button class="btn btn-success" data-dismiss="modal" @click="addCollectionToResource(objCollection,objResourcesView.id)">Add to Resource</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -90,16 +90,16 @@
             viewResource() {
                 this.$store.commit('VIEW_RESOURCE',{objResource: false})
             },
-            addCollectionToResource(resource,intResourceId) {
-                this.$store.dispatch('addCollectionToResource',{'resource': resource, 'intResourceId': intResourceId})
+            addCollectionToResource(objResource,intResourceId) {
+                this.$store.dispatch('addCollectionToResource',{'objResource': objResource, 'intResourceId': intResourceId})
             },
-            removeCollectionToResource(resource,intResourceId) {
-                this.$store.dispatch('removeCollectionToResource',{'resource': resource, 'intResourceId': intResourceId})
+            removeCollectionToResource(objResource,intResourceId) {
+                this.$store.dispatch('removeCollectionToResource',{'objResource': objResource, 'intResourceId': intResourceId})
             }
         },
         computed: {
             ...mapState([
-                'resourcesview',
+                'objResourcesView',
                 'intResourceId',
                 'arrObjResources',
                 'arrObjCollections'

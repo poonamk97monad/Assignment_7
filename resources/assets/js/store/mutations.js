@@ -1,16 +1,20 @@
 let mutations = {
-    CREATE_RESOURCE(state, resource) {
-        state.resources.unshift(resource)
+    CREATE_RESOURCE(state, payload) {
+        state.arrObjResources    = payload.arrObjResources
+        state.arrObjCollections  = payload.arrObjCollections
     },
+
     FETCH_RESOURCES_COLLECTIONS(state, payload) {
         state.arrObjResources    = payload.arrObjResources
         state.arrObjCollections  = payload.arrObjCollections
     },
+
     FETCH_COLLECTIONS_RESOURCES(state, payload) {
         state.arrObjCollections  = payload.arrObjCollections
         state.arrObjResources    = payload.arrObjResources
 
     },
+
     FAVORITES_RESOURCE(state, response) {
         let intId = response.id;
         state.arrObjResources.data.forEach(function(item ,i) {
@@ -19,6 +23,7 @@ let mutations = {
             }
         });
     },
+
     FAVORITES_COLLECTION(state, response) {
         let intId = response.id;
         state.arrObjCollections.data.forEach(function(item ,i) {
@@ -27,43 +32,51 @@ let mutations = {
             }
         });
     },
-    DELETE_RESOURCE(state, resource) {
-        let index = state.resources.findIndex(item => item.id === resource.id)
-        state.resources.splice(index, 1)
+
+    DELETE_RESOURCE(state, payload) {
+        state.arrObjResources    = payload.arrObjResources
+        state.arrObjCollections  = payload.arrObjCollections
     },
 
     ADD_REMOVE_COLLECTION_TO_RESOURCE(state, payload) {
-        state.resourcesview = payload.objResource
+        state.objResourcesView = payload.objResource
     },
+
     ADD_REMOVE_RESOURCE_TO_COLLECTION(state, payload) {
-        state.collectionsview = payload.objCollection
+        state.objCollectionsview = payload.objCollection
     },
+
     VIEW_RESOURCE(state, payload) {
-        state.resourcesview = payload.objResource
+        state.objResourcesView = payload.objResource
     },
-    UPDATE_RESOURCE(state, resource) {
-        let index = state.resources.findIndex(item => item.id === resource.id)
-        state.resources.splice(index, 1)
+
+    UPDATE_RESOURCE(state,payload) {
+        state.arrObjResources    = payload.arrObjResources
+        state.arrObjCollections  = payload.arrObjCollections
     },
-    CREATE_COLLECTION(state, collection) {
-        state.collections.unshift(collection)
+
+    CREATE_COLLECTION(state, payload) {
+        state.arrObjCollections  = payload.arrObjCollections
+        state.arrObjResources    = payload.arrObjResources
     },
+
+    UPDATE_COLLECTION(state,payload) {
+        state.arrObjCollections  = payload.arrObjCollections
+        state.arrObjResources    = payload.arrObjResources
+    },
+
     VIEW_COLLECTION(state, payload) {
-        // let index = state.resources.findIndex(item => item.id === resource.id)
-        state.collectionsview = payload.objCollection
+        state.objCollectionsview = payload.objCollection
     },
+
     SEARCH_RESOURCE_COLLECTION(state, payload) {
-        console.log("PAYLOAD")
-        console.log(payload)
         state.arrObjSearchPageData    = payload
-        // state.arrObjSearchCollections  = payload.arrObjCollectionSearch
     },
+
     SEARCH_COLLECTION(state, payload) {
-        console.log('payload')
-        console.log(payload)
-        // let index = state.resources.findIndex(item => item.id === resource.id)
         state.arrObjCollections = payload
     },
+
     ELASTIC_SEARCH(state, payload){
         state.arrObjElasticSearchResult = payload
     }

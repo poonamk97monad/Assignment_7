@@ -14,6 +14,7 @@
             </ul>
         </div>
     @endif
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div id="app">
     <div class="container" >
         <div class="container" >
@@ -30,4 +31,9 @@
         </div>
     </div>
 </div>
+<script>
+    window.Laravel = <?php echo json_encode([
+        'csrfToken' => csrf_token(),
+    ]); ?>
+</script>
 <script src="{{ asset('js/app.js') }}"></script>
